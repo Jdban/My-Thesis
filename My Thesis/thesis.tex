@@ -30,7 +30,7 @@
                                        linkcolor=blue,bookmarks=true,bookmarksopen=true,%
                                        bookmarksopenlevel=3,pdfstartview=FitV,
                                        pdfauthor={Jason Banich},
-                                       pdftitle={!!Title goes here!!},
+                                       pdftitle={Using Neural Networks to Assist in Prediction of Zebra Stripe Crosswalk Images},
                                        pdfkeywords={thesis, masters, cal poly}
                                        ]{hyperref}
     %Options with pdfstartview are FitV, FitB and FitH
@@ -92,9 +92,9 @@
 % Update fields below!
 \title{Detecting Zebra Crosswalks Using Neural Networks}
 \author{Jason Banich}
-\degreemonth{April} \degreeyear{2016} \degree{Master of Science}
-\defensemonth{April} \defenseyear{2016}
-\numberofmembers{3} \chair{Dr. John Seng} \othermemberA{Dr. Franz Kurfess} \othermemberB{Person3, Ph.D.} \campus{San Luis Obispo}
+\degreemonth{June} \degreeyear{2016} \degree{Master of Science}
+\defensemonth{June} \defenseyear{2016}
+\numberofmembers{3} \chair{Dr. John Seng} \othermemberA{Dr. Franz Kurfess} \othermemberB{Dr. Philip Nico} \campus{San Luis Obispo}
 \copyrightyears{seven}
 \degree{Master Of Science} 
 \field{Computer Science}
@@ -102,8 +102,9 @@
 
 \todo[inline]{COMMMENTS ARE ENABLED THIS IS NOT THE FINAL VERSION}
 \todo[inline]{BE SURE THAT STRIPLETS HAS BEEN FIND AND REPLACED TO STRIPELETS FOR FINAL - CHECK CASE}
-\todo[inline]{BE SURE THAT GRAY/GREY iS USED THE SAME EVERYWHERE  (GRAY IS CHOSEN ONE)}
+\todo[inline]{BE SURE THAT GRAY/GREY IS USED THE SAME EVERYWHERE  (GRAY IS CHOSEN ONE)}
 \todo[inline]{Fix splitting of tables}
+\todo[inline]{acknowledgements}
 
 \maketitle
 
@@ -116,9 +117,9 @@
 \committeemembershippage
 
 \begin{abstract}
-It can be difficult to guide yourself across a crosswalk successfully when your visual capabilities are limited. This can be an everyday issue for someone with impaired vision. This paper aims to help alleviate that issue by focusing on zebra stripe crosswalks and coming up with an algorithm that can quickly and accurately identify and help guide a user across the crosswalk using a handheld device such as a phone. \todo[inline]{NOT ACTUALLY A PHONE APP}The image is identified as being part of a crosswalk or not, and then the user could be given feedback directing them back towards the crosswalk if they are off-course.
+It can be difficult to guide yourself across a crosswalk successfully when your visual capabilities are limited. This can be an everyday issue for someone with impaired vision. This paper aims to help alleviate that issue for zebra stripe crosswalks by coming up with an algorithm that incorporates neural networks to assist in quickly and accurately identifying a crosswalk in video and pictures from a cell phone camera. 
 
-\todo[inline]{Add more/redo}
+\todo[inline]{Add more/redo - Jeneeplz}
 
 \end{abstract}
 
@@ -147,7 +148,7 @@ I would like to thank my parents for supporting me through college.
 
 Crossing the street can be very dangerous for visually impaired individuals. Orienting oneself is difficult without vision. Visually impaired people must use other cues such as listening for cars stopped at red lights and trying to walk in front of them. Vision processing could be applied to recognize the crosswalk to assist the user with limited vision. In order to increase the safety of blindly crossing the street, a phone app could allow the user to hold up their phone and get feedback about the location of the crosswalk. As they cross the street, they would receive feedback as to whether they were going off course. Developing a fast and reliable metric for detecting the crosswalk is the first step towards developing a vision processing phone app to aid the visually impaired.
 
-There have been some investigations of zebra crosswalk detection, but none so far have used neural networks \todo[inline]{citations of some papers}. Neural networks are formed by a number of interconnected nodes that require training. Once trained, they are configured to a specific application to predict outcomes based on the inputs. Neural networks are being used for an increasing number of applications where patterns are difficult to decipher manually. Although the training process can be time consuming, neural networks run quickly once trained, which is a large benefit to any application where speed is a factor. 
+There have been some investigations of zebra crosswalk detection, but none so far have used neural networks \cite{Coughlan2006}\cite{ZebraPhone}. Neural networks are formed by a number of interconnected nodes that require training. Once trained, they are configured to a specific application to predict outcomes based on the inputs. Neural networks are being used for an increasing number of applications where patterns are difficult to decipher manually. Although the training process can be time consuming, neural networks run quickly once trained, which is a large benefit to any application where speed is a factor. 
 
 Figure-ground segmentation has been used to separate the objects from the background scene. This technique can be applied to zebra crosswalks to allow the detection of potential stripelets in the image using geometric parameters \cite{Coughlan2006}. Adding neural networks to this discovery method allows us to use parameters to evaluate whether stripelets are part of a crosswalk, a task which would be difficult manually. This paper aims to use neural networks to improve the reliability of zebra crosswalk detection methods, by offering a different approach to the problem.
 
@@ -160,9 +161,9 @@ Figure-ground segmentation has been used to separate the objects from the backgr
 \chapter{Background}
 \section{Types of crosswalks}
 
-There are many types of crosswalks (See figure \ref{fig:TypesOfXwalksFig} and \ref{fig:TypesOfXwalksRealFig} for some examples), the main two are zebra stripe crosswalks and standard two line crosswalks. Two line crosswalks are more commonly used due to their simplicity, but zebra crosswalks are often used in more dangerous intersections due to their benefits in visibility for drivers \cite{crosswalkTypeEvaluation}. Using vision processing to recognize the boundaries of two line crosswalks has been done many times, because there is no real difference between processing a two line crosswalk and processing the driving lane of a car, of which there are many implementations.
+\todo[inline]{Jeneeplz - any suggestions for more content too?}
 
-\todo[inline]{needs more content}
+There are many types of crosswalks (See figure \ref{fig:TypesOfXwalksFig} and \ref{fig:TypesOfXwalksRealFig} for some examples), the main two are zebra stripe crosswalks (sometimes called 'continental') and standard two line crosswalks. Two line crosswalks are more commonly used due to their simplicity, but zebra crosswalks are often used in more dangerous intersections due to their benefits in visibility for drivers \cite{crosswalkTypeEvaluation}. Using vision processing to recognize the boundaries of two line crosswalks has been done many times, because there is no real difference between processing a two line crosswalk and processing the driving lane of a car, of which there are many implementations.
 
 \begin{figure}[h!]
 \begin{center}
@@ -183,7 +184,7 @@ There are many types of crosswalks (See figure \ref{fig:TypesOfXwalksFig} and \r
 \end{figure}
 
 \section{Neural Networks}
-Neural networks are a type of machine learning that have been used recently for many vision applications such as image classification (See figure \ref{fig:DogWithHat}) and pattern recognition \cite{christianszegedy2014}. Neural networks function using an interconnected network of neurons that work together to process the training data in order to discover a pattern or classification. Neural networks are well suited for many data sets that include lots of information that could be difficult to manually train a computer to categorize. An odd use case for neural networks is that they have been used to help determine which signals from a rat's brain to use to trigger prosthetic limbs to move by measuring results of brain probes \cite{ratNeural}.
+Neural networks are a type of machine learning that have been used recently for many vision applications such as image classification (See figure \ref{fig:DogWithHat}) and pattern recognition \cite{christianszegedy2014}, because they are useful for datasets with hard-to-detect patterns. Neural networks function using an interconnected network of neurons that work together to process the training data in order to discover a pattern or classification. Neural networks are well suited for many data sets that include lots of information that could be difficult to manually train a computer to categorize. An odd use case for neural networks is that they have been used to help determine which signals from a rat's brain to use to trigger prosthetic limbs to move by measuring results of brain probes \cite{ratNeural}.
 
 Neural networks are given a large amount of training data with known outputs. The network then runs over the entire dataset repeatedly, adjusting weighted parameters of each of the inputs every iteration to reduce the amount of error in the predictions. Backpropogation of the data is also used in order to assist in training. Once the neural network is trained, the application can feed in newly discovered values and receive a prediction of the output.
 
@@ -199,7 +200,7 @@ Neural networks are given a large amount of training data with known outputs. Th
 \chapter{Related Works}
 \label{Related Works}
 
-\section{Simple Lane Following Algorithm}
+\section{Standard Lane Following Algorithm}
 As autonomous cars start to become a reality, there is a need for algorithms
 that can assist them in navigating and staying inside the lines. These
 algorithms work by detecting the lines that are drawn on the pavement, and
@@ -221,18 +222,17 @@ One algorithm for lane following is as follows:
 By following these steps, the image is processed and the lanes are returned,
 which can then be used to direct the car to remain inside the lane \cite{SingleLane1}.
 
-\todo[inline]{Needs at least one more}
+\todo[inline]{Needs at least one more - maybe http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3183276/ or http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4140111/}
 
 
 \chapter{Detecting Zebra Crosswalks}
 
 \section{Properties of zebra crosswalks}
 
-Zebra crosswalks have many properties that could be used to help identify them, one example would be the lengths of the crosswalk's edges. The edges are well defined in the image, so they can be collected rather easily. Other properties include the fact that painted lines are typically homogeneous in the center in terms of pixel intensity. Zebra crosswalk stripes are also spaced a consistent distance apart. The lines in the crosswalk are all also exactly parallel. 
-\todo[inline]{Needs more content}
+Zebra crosswalks have many properties that could be used to help identify them, one example would be the lengths of the crosswalk's edges. The edges are well defined in most images of crosswalks, so they can be collected rather easily, and have a distinct shape. Other qualities include the fact that painted lines are typically homogeneous in the center in terms of pixel intensity. Zebra crosswalk stripes are also spaced a consistent distance apart. The horizontal lines in the crosswalk are all exactly parallel, and the side edges of a zebra crosswalk should be parallel as well and point towards the vanishing point. 
+\todo[inline]{Jeneeplz May 11th}
 
 \section{Coughlan Approach}
-\todo[inline]{@Seng or @Jenee what do I do for paper title?}
 In Coughlan and Shen's 2006 paper \cite{Coughlan2006} about identifying zebra crosswalks, they propose a method for recognizing zebra stripe crosswalks using figure-ground segmentation.  Their method starts by converting the image to grayscale, shrinking it, and then blurring it slightly. Then, the derivative of image intensity is taken in the Y direction to find the pixels that look like top and bottom edges. The derivative assigns top lines a negative value, and bottom lines a positive value.  These edges are then greedily grouping together into larger line segments. The edges are then matched up with other edges that might fit together to be part of the same crosswalk stripe. They define a candidate stripe fragment feature as a 'stripelet.' A stripelet is defined as the combination of two line segments with the following properties: 
 \begin{enumerate}
   \item The upper and lower segments have polarities consistent with a crosswalk stripe (upper is above lower)
@@ -382,7 +382,7 @@ The stripelets that are predicted by the neural network to be part of a crosswal
 
 \subsection{Crosswalk Boundary Line Drawing}
 
-In order to attempt to draw the boundary lines for the crosswalk, the edges from the striplets that were positively identified as being part of a crosswalk are used. Three points are taken from the outer edges of the stripelets to assist in predicting the boundary as shown in figure \ref{fig:LinesAndEdgePoints}.  
+In order to attempt to draw the boundary lines for the crosswalk, the edges from the stripelets that were positively identified as being part of a crosswalk are used. Three points are taken from the outer edges of the stripelets to assist in predicting the boundary as shown in figure \ref{fig:LinesAndEdgePoints}.  
 
 \begin{figure}[h!]
 \begin{center}
@@ -426,7 +426,7 @@ The data used for the results were a selection of videos from multiple white cro
 %How Neural Networks are used here (explain some of the experimentation around different layers, and how they didn't do much)
 \subsection{Neural Network Usage}
 %Jeneeplz
-For this project, neural networks are used for the prediction of striplets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 15 neurons. 
+For this project, neural networks are used for the prediction of stripelets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 15 neurons. 
 
 
 There is no real consensus on exactly how many hidden layers and neurons should be used in the perfect neural network. The different rules of thumb\cite{Heaton:2008:INN:1502373} have been that no more than one hidden layer is typically needed, and the number of neurons should be between the number of inputs and the number of outputs, and layers must have more than one neuron. With those being the guidelines, one hidden layer with a number of neurons mostly ranging from the number of inputs to the number of outputs was chosen with a range from 2 to 22 neurons in the hidden layer. Other combinations of these training parameters were tried as well, with none having better results than using all eleven parameters. 
@@ -490,7 +490,7 @@ There is no real consensus on exactly how many hidden layers and neurons should 
 As shown in table \ref{tab:NN-HiddenLayersResults}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
 
 \todo[inline]{redo fig \ref{fig:Neural1png} in graphvis}
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=10cm]{Neural1.png}
 \captionfonts
@@ -509,21 +509,36 @@ The neural network training of the crosswalk stripelets used many different inpu
 
 
 \subsection{Crosswalk Detection}
-%Jeneeplz
-Once the neural network has done its job of culling stripelets, the remaining stripelets are then fed through the crosswalk detection algorithm. The results again are categorized by type of crosswalk, time of day, etc. 
-%Show outlier data first - DOWN first, then Yellow, then the bad video
+Once the neural network has finished culling stripelets, the remaining stripelets are then fed through the crosswalk detection algorithm. The results are again categorized by type of crosswalk, time of day, etc. 
 
-There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle. One of the angles had much worse results than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification, a few examples are shown in figure \ref{fig:downBadPic}. The results from the bad video angle tell us that in a real world application, that angle will be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle can be removed from the overall dataset. 
-\todo[inline]{include a picture that shows all the angles on a single crosswalk}
-\todo[inline]{I know first person isn't allowed, help me here, Jenee}
-\todo[inline]{grab pic for down}
+\subsubsection{Affect of Different Video Angles}
+
+There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle across many crosswalks. Examples of each angle are shown in figure \ref{fig:AllFiveAngles}. The low angle had worse results than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification. A few examples are given in figure \ref{fig:downBadPic}. The poor results from the bad video angle show that in an actual use case, that angle must be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle can be removed from the overall dataset. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{DownBad.png}
+\captionfonts
+\caption[Low Angle Video Examples]{Examples of the low angle video that garnered poor results}
+\label{fig:downBadPic}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{AllFiveAngles.png}
+\captionfonts
+\caption[All Five Different Crosswalk Angles]{All five angles which videos were taken of the crosswalks. Left to right: (a) Low Angle (b) Left Side (c) Standard (d) Right Side (e) High Angle}
+\label{fig:AllFiveAngles}
+\end{center}
+\end{figure}
 
 \begin{center}
     \begin{longtable}{| r | r |}
     \hline
     Camera Angle & True Positive Rate \bigstrut\\
     \hline
-    Low & 43.24\% \bigstrut\\
+    Low Angle & 43.24\% \bigstrut\\
     \hline
     Left Side & 72.94\% \bigstrut\\
     \hline
@@ -531,7 +546,7 @@ There were five different angles used for the videos of the crosswalks, with 340
     \hline
     Right Side & 76.47\% \bigstrut\\
     \hline
-    High & 70.59\% \bigstrut\\
+    High Angle & 70.59\% \bigstrut\\
     \hline
 
     \caption{Results of crosswalk detection categorized by video angle}
@@ -539,11 +554,10 @@ There were five different angles used for the videos of the crosswalks, with 340
     \end{longtable}
 \end{center}
 
-In order to give a glimpse at how yellow crosswalks worked with white crosswalk training data and this approach in general, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 26\% true positive rate, and the zebra scored 67.5\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data. The yellow crosswalks will be removed from the dataset for the remainder of this section though, because it was just an experiment.
-\todo[inline]{horribly worded jeneeplz}
+\subsubsection{Affect of Time of Day}
 
-\todo[inline]{time of day data}
-Each crosswalk was categorized by time of day as well to see if that had any effect on the prediction rates, as shown in table \ref{tab:timeofday}. There were 300 crosswalk frames for each time of day. The results for each time of day were rather close together, with a slight decrease in the true positive rate from morning to night. This might have to do with the lighting being more difficult to categorize, or potentially just an outlier in the data (for example, the worst crosswalk in the dataset was a night crosswalk as discussed later on). 
+\todo[inline]{Jeneeplz May 11}
+Each crosswalk was categorized by time of day as well to see if that had any effect on the prediction rates. The results are shown in table \ref{tab:timeofday}. There were 300 crosswalk frames for each time of day. The results for each time of day were rather close together, with a slight decrease in the true positive rate from morning to night. This might have to do with the lighting being more difficult to categorize, or potentially just an outlier in the data (for example, the worst crosswalk in the dataset by far was a night crosswalk to be discussed later on). Different lighting caused by different time of day did not seem to be a strong factor in the results. 
 \todo[inline]{finish}
 
 \begin{center}
@@ -558,17 +572,60 @@ Each crosswalk was categorized by time of day as well to see if that had any eff
     Night & 75.75\% \bigstrut\\
     \hline
 
-
     \caption{Results of crosswalk detection categorized by time of day}
     \label{tab:timeofday} 
     \end{longtable}
 \end{center}
 
-\todo[inline]{per crosswalk data, with appendix for non-neural big chart}
-Results were aggregated for each crosswalk (or non-crosswalk video) as well. The results of that is shown in the appendix in tables \ref{tab:appendixcrosswalkresults} and \ref{tab:appendixcrosswalkresultswithoutNeural}, and the summary results are shown in table \ref{tab:crosswalkResultsSummary}, separated into the crosswalks (which have true positive rates) and non-crosswalk videos (which have false positive rates).  There were a couple outliers in each category, to be looked into. 
+\subsubsection{Zebra Crosswalk Versus Hybrid Crosswalk}
+\todo[inline]{zebra vs hybrid SHITTY FIRST DRAFT DONE}
+\todo[inline]{zebra vs hybrid make table work right}
+
+Zebra stripe and hybrid crosswalks both worked well as shown in table \ref{tab:typeOfCwalk}. The worst crosswalk being in the hybrid set really hurt its results. The zebra crosswalk worked better with a lower standard deviation and consistently high results. Both were still good enough to be acceptable, but zebra was definitely better. The training data was even between hybrid and zebra, so that isn't the issue. The hybrid crosswalks are hurt much more by the neural network than the zebras, which may have something to do with the hybrids being worse painted in general, causing issues with the neural network prediction. More training data would likely help. 
 
 \begin{center}
-    \begin{longtable}{|r|r|r|r|r|r|}
+    \begin{longtable}[H]{|r|r|r|r|r|r|r|r|}
+    \hline
+    Type & \multicolumn{1}{l|}{Neural Network Enabled} & Crosswalk Count & Min & Avg & Median & Max & STD \bigstrut\\
+    \hline
+    Hybrid & YES & 6  & 1.25\% & 59.79\% & 66.25\% & 86.25\% & 30.58\% \bigstrut\\
+    \hline
+    Hybrid & NO & 6  & 48.75\% & 86.46\% & 94.38\% & 98.75\% & 18.98\% \bigstrut\\
+    \hline
+    Zebra & YES & 9  & 60.00\% & 88.75\% & 95.00\% & 98.75\% & 13.43\% \bigstrut\\
+    \hline
+    Zebra & NO & 9  & 90.00\% & 97.92\% & 98.75\% & 100.00\% & 3.37\% \bigstrut\\
+    \hline
+
+
+
+    \caption{True positive percent results of crosswalk detection categorized by type of crosswalk}
+    \label{tab:typeOfCwalk} 
+    \end{longtable}
+\end{center}
+
+\subsubsection{Results Grouped by Amount Progress in Video}
+\todo[inline]{this title is awful}
+\todo[inline]{shitty}
+
+For each crosswalk, 20 frames equidistant throughout the video were used. The expected result of this is that there would be a decrease in true positive rate as the video progresses because there will be less crosswalk in the image to work with. The data shown in figure \ref{fig:graphOfFrameCount} shows exactly that. The neural network made the rate go down as one would expect, but the drop seemed to increase as the end of the crosswalk was reached. This may be because more stripelets from earlier in the frames were trained because the early frames are guaranteed to have more stripelets, causing the neural network to be more familiar with those. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{FrameResultsGraph.png}
+\captionfonts
+\caption[True Positives Grouped by Frame of Video]{True positive results grouped by frame of video}
+\label{fig:graphOfFrameCount}
+\end{center}
+\end{figure}
+
+\subsubsection{Results Grouped by Crosswalk}
+
+\todo[inline]{per crosswalk data, with appendix for non-neural big chart - shitty}
+Results were grouped by each crosswalk or non-crosswalk video as well. The results of that is shown in the appendix in the appendix in tables \ref{tab:appendixcrosswalkresults} and \ref{tab:appendixcrosswalkresultswithoutNeural}, and the summary results are shown in table \ref{tab:crosswalkResultsSummary}. The results are separated into the crosswalks (which have true positive rates) and non-crosswalk videos (which have false positive rates).  There were a couple outliers in each category (crosswalk vs not) to be looked into. Overall, the true positives had a rather high standard deviation, which was heavily affected by the one outlier crosswalk, and the false positives did not. Other than the outliers, they were grouped rather well.
+
+\begin{center}
+    \begin{longtable}[H]{|r|r|r|r|r|r|}
     \cline{2-6}    \multicolumn{1}{r|}{} & Minimum & Average & Median & Maximum & Standard Deviation \bigstrut\\
     \hline
     True Positive Rates & 1.25\% & 77.17\% & 81.25\% & 98.75\% & 25.55\% \bigstrut\\
@@ -582,7 +639,14 @@ Results were aggregated for each crosswalk (or non-crosswalk video) as well. The
     \end{longtable}
 \end{center}
 
-\todo[inline]{speak to a couple of these, including the bad one}
+\subsubsection{Yellow Crosswalks}
+
+In order to determine if yellow crosswalks work with white crosswalk training data, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 26\% true positive rate, and the zebra scored 67.5\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data, due to the differing intensity values between the two colors affecting neural network parameters. 
+
+\subsubsection{Issues discovered}
+\todo[inline]{better title}
+\todo[inline]{finish speaking to a couple of these, including the bad one}
+\todo[inline]{discuss more after getting photos. What are my guesses?}
 
 The video with the highest amount of false positives (24\%) was 'NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes were incorrectly identified by the neural network, and passed the validation to classify the image as a crosswalk. A couple pictures are shown in figure \ref{}.
 \todo[inline]{explain some more about why it failed after grabbing pictures}
@@ -592,7 +656,7 @@ Another video with a high amount of false positives (7\%) was 'NonC Output Night
 
 One crosswalk specifically had the worst results by far, 'Night hybrid 3.' Only one of eighty (1.25\%) frames was correctly identified in this crosswalk, whereas the next lowest crosswalk had 58\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This is likely due to...
 
-\todo[inline]{discuss more after getting photos. What are my guesses?}
+\subsubsection{Overall Results}
     
 \todo[inline]{overall data discussion}
 Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk frames, and using the neural network to cull stripelets before detection, a p-value of .0242 is obtained. When not using the neural network to cull the stripelets, the p-value is .1685 (see table \ref{tab:overallresults}). Using the neural network garners an improvement of 695\%. In simpler terms, using neural networks, out of 1000 positively predicted images using neural networks, only 24 would be false positives. 
@@ -667,8 +731,19 @@ Another improvement would be to try to find the smallest image size necessary fo
 
 \chapter{Conclusion}
 \label{conclusion}
+%\todo[inline]{What I did ( couple sentences), why I did it (more), why I think they worked or didn't work  (biggest)}
 
-\todo[inline]{What I did ( couple sentences), why I did it (more), why I think they worked or didn't work  (biggest)}
+\todo[inline]{Jenee help me with this}
+This project incorporated neural networks into a process of recognizing zebra stripe crosswalks in images/video in order to determine how useful it would be. 
+
+Neural networks are used in many image processing platforms, so it was worth investigating if it worked with this application as well. It doesn't seem like anyone had tried to use neural networks for recognizing zebra crosswalks before.
+
+An improvement of ~700\% increase in p-value was seen when comparing the same code using neural networks vs not using neural networks. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. There is definitely promise in this method for real world use. 
+
+
+
+
+
 
 
 % ------------- End main chapters ----------------------
