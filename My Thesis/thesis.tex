@@ -46,13 +46,14 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 %\usepackage[letterpaper]{geometry}  %ORIG
-\usepackage[a4paper,footskip=.25in]{geometry} %http://tex.stackexchange.com/questions/47202/how-to-keep-page-numbering-below-text
+\usepackage[letterpaper,footskip=.25in]{geometry} %http://tex.stackexchange.com/questions/47202/how-to-keep-page-numbering-below-text
 \usepackage[overload]{textcase}
 \usepackage{multirow}
 \usepackage{bigstrut}
 \usepackage{tabularx}
 \usepackage{adjustbox}
 \usepackage{float}
+\usepackage[section]{placeins} %maybe
 
 \usepackage[disable]{todonotes} % notes not showed
 %\usepackage[draft]{todonotes}   % notes showed
@@ -407,7 +408,7 @@ A standard method of Hough transform for line detection is then used to discover
 
 The generated lines are either defined as potential crosswalk top edges, or bottom edges. These potential edges are matched up against other edges (top vs bottom edges) to determine if they fit certain criteria to be considered stripelets. A stripelet is defined as an area bounded by a top and bottom line that follows certain constraints. The constraints used in Coughlan's figure-ground crosswalk paper \cite{Coughlan2006} are the same as used here: the top line is above the bottom line in the image, the two lines' slopes are very similar, the vertical width of the generated stripelet is between a defined cutoff value, and the two lines have sufficient X overlap. If all of these are true, then it is returned as a stripelet (See figure \ref{fig:UnculledStripelets}). 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=7cm]{UnculledStripelets.png}
 \captionfonts
@@ -551,7 +552,7 @@ There is no real consensus on exactly how many hidden layers and neurons should 
 
 
 
-As shown in table \ref{tab:NN-HiddenLayersResults} (more data shown in the appendix table \ref{tab:HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
+As shown in table \ref{tab:NN-HiddenLayersResults} (more data shown in the appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
 
 \begin{figure}[ht]
 \begin{center}
@@ -657,7 +658,7 @@ Each crosswalk was categorized by time of day, morning, midday and night, to see
 
 The true positive percent results of zebra stripe and hybrid crosswalks detection are shown in table \ref{tab:typeOfCwalk}. There were nine zebra stripe crosswalks in the dataset, and six hybrids. The least accurately predicted crosswalk was in the hybrid dataset, leading to a much higher standard deviation. The zebra crosswalks were predicted more consistently, leading to a lower standard deviation and higher true positive percents. The training data was  biased towards zebra crosswalks, with three hybrids trained versus nine zebra crosswalks. As shown in the table \ref{tab:typeOfCwalk}, the zebra crosswalk median true positive rate only dropped about 3\%, with the introduction of the neural network, while the hybrid median dropped almost 27\% after neural network application. The hybrid crosswalks observed in the area these videos were taken appeared to more frequently have paint irregularities than the zebra crosswalks, potentially due to different maintenance methods by the municipality, as shown in Figure \ref{fig:poorlyPaintedHybrid}, which could also explain the discrepancy. One of the neural network parameters regarding the pixel intensity of the area surrounding the stripelet would also be different for hybrid versus zebra, because hybrids would have a higher value due to the white lines on the sides being part of their surroundings. It is likely that adding more hybrid crosswalks to the training dataset would improve their results.
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{PoorlyPaintedHybrid.png}
 \captionfonts
@@ -667,7 +668,7 @@ The true positive percent results of zebra stripe and hybrid crosswalks detectio
 \end{figure}
 
 \begin{table}[t]
-    \begin{longtable}[H]{|r|r|r|r|r|r|r|}
+    \begin{longtable}[t]{|r|r|r|r|r|r|r|}
     \hline
     Type & \multicolumn{1}{l|}{NN Enabled} & Min & Avg & Median & Max & STD \bigstrut\\
     \hline
@@ -689,7 +690,7 @@ The true positive percent results of zebra stripe and hybrid crosswalks detectio
 
 As the user walks across the crosswalk, the view of the crosswalk changes and the algorithm needs to continue guiding them. For each crosswalk, 20 frames equidistant throughout the video were used. The expected result of this is that there would be a decrease in true positive rate as the user progresses because there will be fewer stripelets in the image to work with. The data shown in figure \ref{fig:graphOfFrameCount} shows exactly that. The neural network made the rate go down as one would expect, but the drop seemed to increase as the end of the crosswalk was reached. This may be because the training data may be more biased to earlier frames, since the early frames are guaranteed to have more stripelets. In figure \ref{fig:NumStripeletsvsRates}, we can also see that the number of stripelets in each image as the video went on became fewer as the user crossed the crosswalk, but the predictions of the stripelets stayed mostly consistent throughout. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{FrameResultsGraph.png}
 \captionfonts
@@ -698,7 +699,7 @@ As the user walks across the crosswalk, the view of the crosswalk changes and th
 \end{center}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=12cm]{NumStripeletsvsRates.png}
 \captionfonts
@@ -738,7 +739,7 @@ In order to determine how well yellow crosswalks worked with white crosswalk tra
 
 The video with the highest amount of false positives (12\%) was 'NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes and sidewalk were incorrectly matched together, which ended up passing the neural network and the validation as a crosswalk. A couple examples are shown in figure \ref{fig:worstFalsePosPic}, one can see the identified stripelets. More neural network parameters may be able to help remove these from the stripelet set, perhaps something relating to the vertical pixel intensity. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{NonCWorstCwalk.png}
 \captionfonts
@@ -749,7 +750,7 @@ The video with the highest amount of false positives (12\%) was 'NonC Output Nig
 
 Another video with a high amount of false positives (7\%) was 'NonC Output Night 11,' which is a of a parking lot with many horizontal lines painted throughout.  A few pictures are shown in figure \ref{fig:2ndworstFalsePosPic}. These examples aren't typically what one would expect to see if they were trying to cross the street, but they are lines that look similar to a zebra crosswalk. They could potentially be filtered out by using some sort of expected width vs Y axis level in the image. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{NonC2ndWorstCwalk.png}
 \captionfonts
@@ -760,7 +761,7 @@ Another video with a high amount of false positives (7\%) was 'NonC Output Night
 
 One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown in figure \ref{fig:worstcwalk}. Only one of eighty (1.25\%) frames was correctly identified in this crosswalk, whereas the next lowest crosswalk had 57\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This crosswalk had very odd pavement coloring, which may have contributed to why it failed the neural network.  Potentially this issue could be solved by more training data and including more odd crosswalks such as this one. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{WorstCwalk.png}
 \captionfonts
@@ -775,7 +776,7 @@ Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk fr
 
 
 \begin{table}[t]
-    \begin{longtable}[H]{|r|r|r|r|}
+    \begin{longtable}[t]{|r|r|r|r|}
     \hline
     \multicolumn{1}{|c|}{Neural Network Enabled} & True Positive Rate & False Positive Rate & q-value \bigstrut\\
     \hline
@@ -789,7 +790,7 @@ Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk fr
     \end{longtable}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{CrosswalkTruePosWithAndWithout.png}
 \captionfonts
@@ -798,7 +799,7 @@ Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk fr
 \end{center}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{VideoFalsePosWithAndWithout.png}
 \captionfonts
@@ -811,7 +812,7 @@ Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk fr
 
 A subset of 180 images were selected to test the crosswalk boundary drawing and had their boundary lines manually drawn. A metric was needed in order to compare the correct line with the estimated line. The metric used involved taking multiple points that were equidistant along the estimated line and finding the normal distance to the manually drawn line. These distances were then summed up to give a general gauge of how close lines were together. Exactly identical lines would have a difference value of zero, while more distinct lines would have greater values. Some example images with their evaluation result values are shown in figure \ref{fig:LinesUsingJustGoodStartAndEnds2}. Overall, the results were rather promising, with the vast majority of lines from images with a recognized crosswalk being close to correct with a median measure of 66 and only 10\% of the lines being over the threshold of 400. As shown in figure \ref{fig:400Metric}, 400 was a generous measure, because even at 400, the lines are still close enough.  If the stripelets are predicted properly, and a crosswalk is recognized, the edges of the stripelets are almost guaranteed to be good metrics of the crosswalk edges.
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=15cm]{LinesUsingJustGoodStartAndEnds2.png}
 \captionfonts
@@ -821,7 +822,7 @@ A subset of 180 images were selected to test the crosswalk boundary drawing and 
 \end{center}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=12cm]{400RightSide.png}
 \captionfonts
