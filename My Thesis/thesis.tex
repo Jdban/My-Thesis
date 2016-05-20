@@ -45,17 +45,17 @@
 \usepackage{longtable}
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage[letterpaper]{geometry}
+%\usepackage[letterpaper]{geometry}  %ORIG
+\usepackage[a4paper,footskip=.25in]{geometry} %http://tex.stackexchange.com/questions/47202/how-to-keep-page-numbering-below-text
 \usepackage[overload]{textcase}
 \usepackage{multirow}
 \usepackage{bigstrut}
 \usepackage{tabularx}
 \usepackage{adjustbox}
-\usepackage[section]{placeins}
 \usepackage{float}
 
-%\usepackage[disable]{todonotes} % notes not showed
-\usepackage[draft]{todonotes}   % notes showed
+\usepackage[disable]{todonotes} % notes not showed
+%\usepackage[draft]{todonotes}   % notes showed
 
 \bibliographystyle{abbrv}
 
@@ -90,7 +90,7 @@
 % Declarations for Front Matter
 
 % Update fields below!
-\title{Detecting Zebra Crosswalks Using Neural Networks}
+\title{Zebra Crosswalk Detection Assisted by Neural Networks}
 \author{Jason Banich}
 \degreemonth{June} \degreeyear{2016} \degree{Master of Science}
 \defensemonth{June} \defenseyear{2016}
@@ -100,11 +100,13 @@
 \field{Computer Science}
 
 
-\todo[inline]{COMMMENTS ARE ENABLED THIS IS NOT THE FINAL VERSION}
+\todo[inline]{COMMENTS ARE ENABLED THIS IS NOT THE FINAL VERSION}
 \todo[inline]{JASON - BE SURE THAT STRIPLETS HAS BEEN FIND AND REPLACED TO STRIPELETS FOR FINAL - CHECK CASE}
 \todo[inline]{JASON - BE SURE THAT GRAY/GREY IS USED THE SAME EVERYWHERE  (GRAY IS CHOSEN ONE)}
 \todo[inline]{JASON - Fix splitting of tables}
 \todo[inline]{JASON - acknowledgements}
+\todo[inline]{try to make images at the top of pages when I can}
+\todo[inline]{JASON - Before paper is final, check all the charts and numbers are updated in results section}
 
 \maketitle
 
@@ -117,15 +119,17 @@
 \committeemembershippage
 
 \begin{abstract}
-It can be difficult to guide yourself across a crosswalk when your visual capabilities are limited. This can be an everyday issue for someone with impaired vision. This paper aims to alleviate that issue for zebra stripe crosswalks by proposing an algorithm that incorporates neural networks to assist in quickly and accurately identifying a crosswalk in video and pictures taken from a cell phone camera.
-The algorithm uses multiple properties of zebra stripe crosswalks as neural network parameters and the results are discussed. 
-\todo[inline]{JASON - add a bit more}
+It can be difficult to guide yourself across a crosswalk when your visual capabilities are limited. This can be an everyday issue for someone with impaired vision. This paper aims to alleviate that issue for zebra stripe crosswalks by proposing an algorithm that incorporates multiple properties of zebra stripe crosswalks with a neural network to assist in quickly and accurately identifying a crosswalk in video and pictures taken from a cell phone camera.
+
+This paper improves the accuracy of zebra crosswalk detection in images. In a large dataset, it correctly identified 75\% of zebra crosswalks, while reducing the false discovery rate from 14.8\% without using neural networks to 1.5\% using this neural network method, and only incorrectly identifying 1.4\% of non-crosswalk images as crosswalks.
+%\todo[inline]{JASON - add a bit more}
+%\todo[inline]{JASON - two key numbers that are representative of what I found. this percent better or this percent more accurate}
 
 \end{abstract}
 
 \begin{acknowledgements}
-I would like to thank my parents for supporting me through college.
-\todo[inline]{JASON - finish this}
+I would like to thank my parents, my girlfriend, and Dr. Seng for their support.
+%\todo[inline]{JASON - finish this, worded terribly}
 \end{acknowledgements}
 
 
@@ -163,9 +167,7 @@ Figure-ground segmentation has been used to separate the objects from the backgr
 
 There are many types of crosswalks (See figures \ref{fig:TypesOfXwalksFig} and \ref{fig:TypesOfXwalksRealFig} for some examples), the main two are zebra stripe crosswalks (sometimes called 'continental') and standard two line crosswalks. Two line crosswalks are more commonly used due to their simplicity, but zebra crosswalks are often used in more vulnerable intersections due to their benefits in visibility for drivers \cite{crosswalkTypeEvaluation}. Vision processing for the driving lane of a car has been done many times, and there is no substantial difference between that and a two line crosswalk. As such, algorithms that work for these are mostly interchangeable.
 
-\todo[inline]{JASON - rearrange the photos to match each-other}
-
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{TypesOfXwalks.png}
 \captionfonts
@@ -174,9 +176,9 @@ There are many types of crosswalks (See figures \ref{fig:TypesOfXwalksFig} and \
 \end{center}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
-\includegraphics[width=13cm]{All3Types.jpg}
+\includegraphics[width=13cm]{All3Types.png}
 \captionfonts
 \caption[Real Photos of Crosswalk Types]{Real world samples of the types of crosswalks}
 \label{fig:TypesOfXwalksRealFig}
@@ -188,7 +190,7 @@ Neural networks are a type of machine learning that have been used recently for 
 
 Neural networks are given a large amount of training data with known outputs. The network then runs over the entire dataset repeatedly, adjusting weighted parameters of each of the inputs every iteration to reduce the amount of error in the predictions. Backpropogation of the data is also used in order to assist in training. Once the neural network is trained, the application can feed in new values and receive a prediction of the output.
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{DogWithHat.PNG}
 \captionfonts
@@ -225,8 +227,7 @@ which can then be used to direct the car to remain inside the lane \cite{SingleL
 
 %https://www.researchgate.net/publication/4207389_Bipolarity_and_Projective_Invariant-Based_Zebra-Crossing_Detection_for_the_Visually_Impaired
 
-\section{Bipolarity and Projective Invariant-Based Zebra-Crossing Detection}
-\todo[inline]{Dr. Seng - any suggestions for a better title?}
+\section{Crosswalk Detection Approach Using Pixel Bipolarity and Geometry}
 
 Kyoto Institute of Technology's Uddin and Shioyama created a method of detecting zebra crosswalks using their geometric properties and the bipolarity of the images \cite{relatedworkbipolarity}. Their paper focuses on grouping large areas together that have high values of dark and/or light inside of them. Also, they use the projective invariant aka cross product to determine if the areas of light and dark in their image fit the pattern of a crosswalk. They then use the Fischer criterion to extract feature points in the image where the change from white to black (and vice versa) occur.
 
@@ -243,7 +244,7 @@ The steps are as follows:
 \end{enumerate}
 This method had decent results, with a high true positive rate (74 / 79), and zero false positives out of 34 other images. One downside of their method is that the image is required to have a minimum of four crosswalk stripes in the image to detect it, which means the majority of the crosswalk must be in the frame. Theoretically this method will work with a moderate amount of the crosswalk covered up (by other pedestrians or cars) as long as there are enough feature points in a vertical line in at least one area to detect the crosswalk. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{BipolarCrosswalk.png}
 \captionfonts
@@ -270,7 +271,7 @@ In Coughlan and Shen's 2006 paper \cite{Coughlan2006} about identifying zebra cr
   \item The vertical width of the stripelet must be between 2 and 70 pixels (determined value from their test images).
 \end{enumerate}
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{CoughlanStriplets.png}
 \captionfonts
@@ -283,7 +284,7 @@ After matching up pairs of lines into stripelets, many stripelets are found, mos
 
 After extraction, unary and binary cues are used to determine if the stripelets are figure or ground. Their unary cue uses the fact that stripes lower in the image would be wider if they are part of a crosswalk. Coughlan and Shen found a relationship between the vertical width and vertical Y coordinate, as shown in the scatter plot in figure \ref{fig:CoughlanScatter}, a line drawn with a negative slope along a few points with low width and y value follows the lines that represent stripelets from the crosswalk. They then use a line fitting procedure to try and find an envelope line that fits that model. Once that line is found, they can use it to evaluate other stripelets. They look for longer stripelets that are close to the envelope in order to classify them as potentially a crosswalk stripelet. Additionally, a binary cue is used when the cross ratio test is applied to pairs of stripelets to check that all four lines are approximately parallel. Finally, the cross ratio is also used to verify that adjacent stripelets are within an acceptable distance from each other. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{CoughlanScatter.png}
 \captionfonts
@@ -294,7 +295,7 @@ After extraction, unary and binary cues are used to determine if the stripelets 
 
 They ran this algorithm multiple times on each image with different envelope lines, and used the result that had the highest belief value of being correct. Their results are shown in figure \ref{fig:CoughlanResults}. These results were generated in few seconds per image. 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{CoughlanResult.png}
 \captionfonts
@@ -306,10 +307,9 @@ They ran this algorithm multiple times on each image with different envelope lin
 In their next paper in 2008 \cite{ZebraPhone}, they implemented this algorithm in Symbian C++ on a Nokia  N95 cell phone and obtained a true positive rate of 72\% and a false positive rate of 0.5\% on detected lines being predicted correctly as part of a crosswalk or not over a test set of 30 crosswalk images and 60 non-crosswalk images. Running on their 332 MHz ARM 11 processor running on 320x240 resolution pictures, they were able to obtain a processing speed of three frames per second with optimizations, compared to their processing speed on a PC with unoptimized code, and they believed the code could be further optimized as well. 
 
 \chapter{Neural Network Background}
-\todo[inline]{JASON - More in depth than section in background, and more explanation of how they work}
+%JASON - More in depth than section in background, and more explanation of how they work}
 %https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/  (simple example)
 %http://home.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html //more complex example
-\todo[inline]{JASON - take some stuff from my background portion and make it more in depth}
 
 %Neural networks are a type of machine learning that have been used recently for many vision applications such as image classification (See figure \ref{fig:DogWithHat}) and pattern recognition \cite{christianszegedy2014}, because they are useful for datasets with hard-to-detect patterns. Neural networks function using an interconnected network of neurons that work together to process the training data in order to discover a pattern or classification. Neural networks are well suited for many data sets that include lots of information that could be difficult to manually train a computer to categorize. One odd use case for neural networks is that they have been used to help determine which signals from a rat's brain should be used to trigger prosthetic limbs to move by measuring results of brain probes \cite{ratNeural}.
 
@@ -318,20 +318,29 @@ In their next paper in 2008 \cite{ZebraPhone}, they implemented this algorithm i
 \section{History}
 \label{History}
 %http://www.andreykurenkov.com/writing/a-brief-history-of-neural-nets-and-deep-learning/
+%http://www.springer.com/cda/content/document/cda_downloaddocument/9789401798150-c2.pdf?SGWID=0-0-45-1495021-p177264210
+%yadav_2015
 
-\todo[inline]{JASON - history section with source}
+The origins of neural networks originate in 1943, when McCulloh and Pitts published "A logical calculus of the ideas immanent in nervous activity." They showed that simple neural networks could compute a wide array of functions with the same underlying method. A computer that worked as a neural network was created by Frank Rosenblatt and others, with a focus on pattern matching. In 1986, Rumelhard, Hinton and Williams published "Learning Internal Representation by Error Propagation," which popularized the backpropogation method of finding weights, and brought neural networks to the forefront \cite{BackpropHist}, \cite{yadav_2015}.
+
 
 \section{Neural Network Basics - Feedforward}
 \label{Neural Network Basics - Feedforward}
 %example of a simple thing where why the parameters are weighted
-\todo[inline]{JASON - add pic for feedforward basic}
-\todo[inline]{JASON - add source}
-The most basic example of a neural network is a feedforward neural network. This network allows information to move only forwards, from the inputs to the outputs. An example of a basic feedforward neural network is shown in figure \ref{}. A series of weights is assigned to every connection, and the inputs are fed through the network, multiplied by every weight, summed, and then fed through to the next layer until the output values are generated. To train a feedforward network, one must either manually adjust the weights, or come up with a mathematical formula to do so. 
+The quintessential example of a neural network is a feedforward neural network. This network allows information to move forward only, from the inputs to the outputs. An example of a basic feedforward neural network is shown in figure \ref{fig:smallNN}. A series of weights are assigned to every connection, the inputs are fed through the network, multiplied by each respective weight, summed, and then fed to the next layer until the output values are generated. To train a feedforward network, one must either manually adjust the weights, or come up with a mathematical formula to do so. One such method is backpropogation \cite{feedforwardsource}. 
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=10cm]{simpler.png}
+\captionfonts
+\caption[Small Neural Network Example]{Example of a small neural network with weights labeled}
+\label{fig:smallNN}
+\end{center}
+\end{figure}
 
 \section{Backpropagation Neural Network}
 \label{Backpropagation Neural Network}
-\todo[inline]{JASON - add source}
-Backpropagation works by starting with arbitrary weights for every neural network link. Then you run the neural network the whole way with those weights. you calculate the error on the output vs the expected output using the squared error function and sum for the total error among all output nodes. Then, working from the outputs back, you work with all of the weights feeding into one node at a time using complicated math. Because the hidden layers all jointly affect the output nodes error, a partial derivative must be used for those. Once all the weights are adjusted, the error should have gone down and then you repeat the process over and over until your error level falls to an acceptable value. 
+Backpropagation is a method of training neural networks by adjusting weights backwards through the network. It starts with weights for every link, and runs through them. The error on the output is calculated versus the expected output using the squared error function and the sum of the total error among all output nodes. Then, working from the outputs backwards, one works with all of the weights feeding into a prior node one at a time using partial derivatives and the chain rule. The reason the partial derivative is used is because the hidden layers all jointly affect the output nodes' error and must be taken into account. Once all of the weights are adjusted, the error should decrease and then the process is repeated until the error level is reduced to an acceptable level \cite{backpropositionPaper}. 
 
 \chapter{Using Neural Networks to Detect Zebra Crosswalks}
 
@@ -365,7 +374,7 @@ Yellow and white crosswalks have different pixel intensities, which may cause is
 
 Following the method in the figure-ground paper \cite{Coughlan2006}, the frame is blurred slightly, and then converted to grayscale (Shown in figure \ref{fig:SlightlyBlurred}). 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=7cm]{SlightlyBlurredInput.png}
 \captionfonts
@@ -376,7 +385,7 @@ Following the method in the figure-ground paper \cite{Coughlan2006}, the frame i
 
 The Sobel derivative is taken in the Y direction, leaving just the changes in the Y direction. The resulting pixels are either positive or negative, which signifies whether they are going from dark to light, or light to dark, giving us pixels that can be either the bottom or the top of the crosswalk. These are potential edges of crosswalks in the image (See figure \ref{fig:TopAndBottomSobel}). 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{TopAndBottomSobel.png}
 \captionfonts
@@ -387,7 +396,7 @@ The Sobel derivative is taken in the Y direction, leaving just the changes in th
 
 A standard method of Hough transform for line detection is then used to discover lines (figure \ref{fig:HoughLinesAfterMerge}). 
 
-\begin{figure}[H]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{HoughLinesAfterMerge.png}
 \captionfonts
@@ -413,56 +422,64 @@ The generated lines are either defined as potential crosswalk top edges, or bott
 
 At this point, the algorithm has generated a list of stripelets that are potentially part of a crosswalk. The inputs used for the neural network are a few parameters extracted from the image. The parameters are chosen because they possess characteristics that are believed may contribute towards helping identify a stripelet. A few sample parameters used are the stripelet's vertical/horizontal width, variance of the pixel intensity, and the lengths of the top and bottom lines. These numbers are calculated and then fed into the trained neural network, resulting in a very fast prediction as to whether or not that stripelet is part of a crosswalk.
 
-\todo[inline]{Dr. Seng - Is this the right spot and/or format for this? Talking about the 11 neural network inputs and how they were chosen seems huge for this section. Are there any suggestions on where to put it or how to condense it?}
 
-Eleven different characteristics of the stripelets were taken to be used as the neural network parameters. The parameters are as follows:
+Eleven different characteristics of the stripelets were chosen for use as the neural network parameters. The parameters are as follows:
 
 \begin{enumerate}
-   \item Line length of bottom of crosswalk
+   \item Bottom line length
    \begin{itemize}
-     \item This value directly relates to the stripelet measurements.
-     \item Crosswalk stripelets would be expected to have certain lengths, so this measure could help identify the validity of the stripelet.
+     \item Description: The measure of the length of the bottom of the stripelet.
+     \item Reasoning: Crosswalk stripelets are to have certain lengths, so this measure could help identify the validity of the stripelet.
    \end{itemize}
-   \item Line length of top of crosswalk
+   \item Top line length
    \begin{itemize}
-     \item This value is similar to the bottom length, and this value should pair well with the bottom length to give more information about the stripelet because the two values are correlated.
+    \item Description: The measure of the length of the top of the stripelet.
+    \item Reasoning: This value is similar to the bottom line length, and should pair well with the bottom length to give more information about the stripelet, as the two values are correlated.
    \end{itemize}
-   \item Difference in length between the top and the bottom of the stripelet
+   \item Difference between top line length and bottom line length
    \begin{itemize}
-     \item This value may assist in giving more value to the difference between the two
-     \item We might expect that the difference would help for reasons such as the bottom should always be wider and their difference should usually be a reasonably small number. 
+     \item Description: The difference in length between the top and the bottom of the stripelet.
+     \item Reasoning: Feeding in the difference between these measures explicitly could assist the neural network in using the difference. The bottom ought to be wider and the difference between the two should typically be a reasonably small number. 
    \end{itemize}
-   \item Vertical Stripelet Width
+   \item Vertical stripelet width
    \begin{itemize}
-     \item We would expect that the stripelet vertical width would be a good factor because stripelets should have a certain vertical width that correlates with their top and bottom lengths that would help define them as being part of a crosswalk
+     \item Description: The width of the stripelet vertically between the top and bottom lines.
+     \item Reasoning: The vertical width of the stripelet is a useful factor because stripelets should have a certain vertical width that correlates with their top and bottom lengths, which would help define them as being part of a crosswalk.
    \end{itemize}
-   \item Horizontal Stripelet Width
+   \item Horizontal stripelet width
    \begin{itemize}
-     \item Same as vertical stripelet width, we would expect the parameters to correlate to others and help them make a match
+     \item Description: The width of the stripelet horizontally; the average length of the top and bottom lines.
+     \item Reasoning: Similar to the vertical stripelet width, this parameter should correlate with the other parameters.
    \end{itemize}
-   \item Vertical Stripelet Location
+   \item Vertical stripelet location
    \begin{itemize}
-     \item The vertical stripelet location (Y value of the stripelet center) should help to correlate with other numbers and give a better prediction. For example, one might expect that a crosswalk stripelet higher in the image would be smaller, so this would correlate with vertical and horizontal stripelet width. 
+     \item Description: The vertical stripelet location (Y value of the stripelet center).
+     \item Reasoning: The vertical stripelet location should help to correlate with other parameters to give a better prediction. For example, one might expect that a crosswalk stripelet higher in the image would be smaller, which would correlate this value with vertical and horizontal stripelet width. 
    \end{itemize}
-   \item Variance of the stripelet pixel value
+   \item Variance of the stripelet pixel values
    \begin{itemize}
-     \item We would expect this value that represents how much variance is in the pixel values of the images to give the neural network more insight. For example, we might expect crosswalk stripelets to have very minimal variance because the pixels should be mostly uniform
+     \item Description: Pixel intensity variance within the stripelet.
+     \item Reasoning: The pixel intensity variance should be lower for well painted stripelets, and high for stripelets that contain many different pixel values. This would be indicative of a non-crosswalk stripelet. 
    \end{itemize}
-   \item Standard deviation of the stripelet
+   \item Standard deviation of the stripelet pixel values
    \begin{itemize}
-     \item This is the square root of the variance, but it may give the same insights that the variance does, and allow a similar but simpler metric for the neural network to use
+     \item Description: Square root of the variance.
+     \item Reasoning: This measure may produce the same insights as the variance, and may allow a similar but simpler metric for the neural network to use.
    \end{itemize}
-      \item Standard deviation of the area surrounding the stripelet
+      \item Standard deviation of the pixel intensity of the area surrounding the stripelet
    \begin{itemize}
-     \item We might expect the area around the stripelet to have a low standard deviation as well because it should be a mostly gray sidewalk
+     \item Description: An area surrounding the stripelet is defined and the standard deviation of the pixel intensity in the area is found.
+     \item Reasoning: The area around the stripelet should have a low standard deviation because it would be regular concrete without any lines for a crosswalk stripelet.
    \end{itemize}
-      \item Standard deviation of the area surrounding the stripelet / Standard deviation of the stripelet
+      \item Standard deviation of the area surrounding the stripelet divided by standard deviation of the stripelet
    \begin{itemize}
-     \item This ratio may help to give the neural network a hint of what their relation could be. 
+     \item Description: The standard deviation of the area surrounding the stripelet divided by standard deviation of the stripelet.
+     \item Reasoning: This ratio may help to give the neural network information about the relationship between the two measures.
    \end{itemize}
-   \item Average stripelet intensity / average intensity of area surrounding the stripelet
+   \item Average stripelet pixel intensity divided by average pixel intensity of the area surrounding the stripelet
    \begin{itemize}
-     \item We would expect that the stripelet intensity would be much greater than the area surrounding it, so this value would assist in finding what ratios are indicative of a crosswalk stripelet or not. 
+     \item Description: Average pixel intensity of the stripelet divided by the average pixel intensity of the area surrounding the stripelet.
+     \item Reasoning: The stripelet pixel intensity should be much greater inside the stripelet than the area surrounding it, so this value could assist in finding which ratios are indicative of crosswalk stripelets or not. 
    \end{itemize}
 \end{enumerate}
 
@@ -474,7 +491,7 @@ The stripelets that are predicted by the neural network to be part of a crosswal
 
 In order to attempt to draw the boundary lines for the crosswalk, the edges from the stripelets that were positively identified as being part of a crosswalk are used. Three points are taken from the outer edges of the stripelets to assist in predicting the boundary as shown in figure \ref{fig:LinesAndEdgePoints}.  
 
-\begin{figure}[H]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=14cm]{LinesAndEdgePoints.png}
 \captionfonts
@@ -485,7 +502,7 @@ In order to attempt to draw the boundary lines for the crosswalk, the edges from
 
 RANSAC line fitting is applied to these points in order to fit a line that is the approximation of the edge line, shown in figure \ref{fig:LinesUsingJustGoodStartAndEnds}. 
 
-\begin{figure}[H]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=7cm]{LinesUsingJustGoodStartAndEnds.png}
 \captionfonts
@@ -497,8 +514,7 @@ RANSAC line fitting is applied to these points in order to fit a line that is th
 
 \chapter{Results}
 \label{results}
-\todo[inline]{JASON - Before paper is final, check all the charts and numbers are updated}
-%\todo[inline]{tons of pictures. easy pictures, hard pictures, why they're hard}
+%[inline]{tons of pictures. easy pictures, hard pictures, why they're hard}
 %DONE{methodology section, like how neural networks were used, opencv section in methodology. cpu and clock speed and rate of processing}
 
 \section{Methodology}
@@ -518,11 +534,366 @@ The data used for the results were a selection of videos from multiple white cro
 %Jeneeplz
 For this project, neural networks are used for the prediction of stripelets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 15 neurons. 
 
+%D:\Users\SandyBridge\Dropbox\Thesis\My Paper Stuff\Results\Results of NN Training with diff neurons.xlsx
+    \begin{table}[t]
+        \begin{longtable}{| r | r | r | r |}
+        \hline
+        Neurons in Hidden Layer & True Positive Rate & False Positive Rate & q-value \bigstrut\\
+        \hline
+        15 & 74.42\% & 2.36\% & 0.086 \bigstrut\\
+        \hline
+        \caption[Selected Neural Network Configuration Results]{Crosswalk identification results from neural network training with selected hidden layer configuration}
+        \label{tab:NN-HiddenLayersResults} 
+        \end{longtable}
+    \end{table}
 
 There is no real consensus on exactly how many hidden layers and neurons should be used in the perfect neural network. The different rules of thumb\cite{Heaton:2008:INN:1502373} have been that no more than one hidden layer is typically needed, and the number of neurons should be between the number of inputs and the number of outputs, and layers must have more than one neuron. With those being the guidelines, one hidden layer with a number of neurons mostly ranging from the number of inputs to the number of outputs was chosen with a range from 2 to 22 neurons in the hidden layer. Other combinations of these training parameters were tried as well, with none having better results than using all eleven parameters. 
 
-%D:\Users\SandyBridge\Dropbox\Thesis\My Paper Stuff\Results\Results of NN Training with diff neurons.xlsx
+
+
+As shown in table \ref{tab:NN-HiddenLayersResults} (more data shown in the appendix table \ref{tab:HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
+
+\begin{figure}[ht]
 \begin{center}
+\includegraphics[width=10cm]{ChosenNN2.png}
+\captionfonts
+\caption[Final Neural Network Configuration]{Final neural network configuration showing input layers, hidden layers, and output layers}
+\label{fig:Neural1png}
+\end{center}
+\end{figure}
+
+\subsection{Neural Network Results}
+%JeneePlz
+%This is the results for different videos and their neural network results
+
+    \begin{table}[t]
+        \begin{longtable}{|r|r|r|r|}
+        \hline
+        Number of Stripelets & True Pos Rate & False Pos Rate & Q-Val \bigstrut\\
+        \hline
+        19461 & 77.61\% & 3.57\% & 0.1663 \bigstrut\\
+        \hline
+    
+        \caption{Neural Network results}
+        \label{tab:nnresultsoverall} 
+        \end{longtable}
+    \end{table}
+
+
+The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the q-value. The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The Q value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 16\% of the positive results were incorrect. 
+    
+
+
+
+
+\subsection{Crosswalk Detection}
+Once the neural network has finished culling stripelets, the remaining stripelets are then fed through the crosswalk detection algorithm. The results are again categorized by type of crosswalk, time of day, etc. 
+
+\subsubsection{Effect of Different Video Angles}
+
+There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle across many crosswalks. Examples of each angle are shown in figure \ref{fig:AllFiveAngles}. The low angle had worse results than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification. A few examples are given in figure \ref{fig:downBadPic}. The poor results from the bad video angle show that in an actual use case, that angle must be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle can be removed from the overall dataset. 
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=15cm]{DownBad.png}
+\captionfonts
+\caption[Low Angle Video Examples]{Examples of the low angle video that garnered poor results}
+\label{fig:downBadPic}
+\end{center}
+\end{figure}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=15cm]{AllFiveAngles.png}
+\captionfonts
+\caption[All Five Different Crosswalk Angles]{All five angles which videos were taken of the crosswalks. Left to right: (a) Low Angle (b) Left Side (c) Standard (d) Right Side (e) High Angle}
+\label{fig:AllFiveAngles}
+\end{center}
+\end{figure}
+
+\begin{table}[t]
+    \begin{longtable}{|r|r|}
+    \hline
+    Camera Angle & True Positive Rate \bigstrut\\
+    \hline
+    Low Angle & 45.33\% \bigstrut\\
+    \hline
+    Left Side & 76.67\% \bigstrut\\
+    \hline
+    Standard & 78.00\% \bigstrut\\
+    \hline
+    Right Side & 77.00\% \bigstrut\\
+    \hline
+    High Angle & 74.00\% \bigstrut\\
+    \hline
+
+
+    \caption{Results of crosswalk detection categorized by video angle}
+    \label{tab:downbad} 
+    \end{longtable}
+\end{table}
+
+\subsubsection{Effect of Time of Day}
+Each crosswalk was categorized by time of day, morning, midday and night, to see if that had any effect on the prediction rates. The results are shown in table \ref{tab:timeofday}. There were 300 crosswalk frames for each different time of day. The results for each time of day were rather close together, with a slight increase for morning. This might have to do with the lighting causing the image to be more easy to categorize during the morning hours. This data shows that different lighting caused by different time of day did not seem to be a strong factor in the results.
+
+\begin{table}[t]
+    \begin{longtable}{| r | r | r |}
+    \hline
+    Time of Day & True Positive Rate \bigstrut\\
+    \hline
+    Morning & 78.25\% \bigstrut\\
+    \hline
+    Midday & 75.25\% \bigstrut\\
+    \hline
+    Night & 75.75\% \bigstrut\\
+    \hline
+
+    \caption{Results of crosswalk detection categorized by time of day}
+    \label{tab:timeofday} 
+    \end{longtable}
+\end{table}
+
+\subsubsection{Zebra Crosswalk Versus Hybrid Crosswalk}
+
+The true positive percent results of zebra stripe and hybrid crosswalks detection are shown in table \ref{tab:typeOfCwalk}. There were nine zebra stripe crosswalks in the dataset, and six hybrids. The least accurately predicted crosswalk was in the hybrid dataset, leading to a much higher standard deviation. The zebra crosswalks were predicted more consistently, leading to a lower standard deviation and higher true positive percents. The training data was  biased towards zebra crosswalks, with three hybrids trained versus nine zebra crosswalks. As shown in the table \ref{tab:typeOfCwalk}, the zebra crosswalk median true positive rate only dropped about 3\%, with the introduction of the neural network, while the hybrid median dropped almost 27\% after neural network application. The hybrid crosswalks observed in the area these videos were taken appeared to more frequently have paint irregularities than the zebra crosswalks, potentially due to different maintenance methods by the municipality, as shown in Figure \ref{fig:poorlyPaintedHybrid}, which could also explain the discrepancy. One of the neural network parameters regarding the pixel intensity of the area surrounding the stripelet would also be different for hybrid versus zebra, because hybrids would have a higher value due to the white lines on the sides being part of their surroundings. It is likely that adding more hybrid crosswalks to the training dataset would improve their results.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{PoorlyPaintedHybrid.png}
+\captionfonts
+\caption[Poorly Painted Hybrid Crosswalk]{Poorly painted hybrid crosswalk}
+\label{fig:poorlyPaintedHybrid}
+\end{center}
+\end{figure}
+
+\begin{table}[t]
+    \begin{longtable}[H]{|r|r|r|r|r|r|r|}
+    \hline
+    Type & \multicolumn{1}{l|}{NN Enabled} & Min & Avg & Median & Max & STD \bigstrut\\
+    \hline
+    Hybrid & YES & 1.25\% & 59.17\% & 65.00\% & 86.25\% & 30.51\% \bigstrut\\
+    \hline
+    Hybrid & NO & 37.50\% & 83.75\% & 91.88\% & 98.75\% & 23.06\% \bigstrut\\
+    \hline
+    Zebra & YES & 56.25\% & 87.92\% & 95.00\% & 98.75\% & 14.59\% \bigstrut\\
+    \hline
+    Zebra & NO & 86.25\% & 96.67\% & 98.75\% & 100.00\% & 4.51\% \bigstrut\\
+    \hline
+
+    \caption{True positive percent results of crosswalk detection categorized by type of crosswalk}
+    \label{tab:typeOfCwalk} 
+    \end{longtable}
+\end{table}
+
+\subsubsection{Effects of Crosswalk Traversal on Accuracy}
+
+As the user walks across the crosswalk, the view of the crosswalk changes and the algorithm needs to continue guiding them. For each crosswalk, 20 frames equidistant throughout the video were used. The expected result of this is that there would be a decrease in true positive rate as the user progresses because there will be fewer stripelets in the image to work with. The data shown in figure \ref{fig:graphOfFrameCount} shows exactly that. The neural network made the rate go down as one would expect, but the drop seemed to increase as the end of the crosswalk was reached. This may be because the training data may be more biased to earlier frames, since the early frames are guaranteed to have more stripelets. In figure \ref{fig:NumStripeletsvsRates}, we can also see that the number of stripelets in each image as the video went on became fewer as the user crossed the crosswalk, but the predictions of the stripelets stayed mostly consistent throughout. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{FrameResultsGraph.png}
+\captionfonts
+\caption[Neural Network True Positives Grouped by Frame of Video]{True positive results grouped by frame of video (frame 1 to frame 20)}
+\label{fig:graphOfFrameCount}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=12cm]{NumStripeletsvsRates.png}
+\captionfonts
+\caption[True and False Positives Grouped by Frame of Video and Number of Stripelets]{True and false positive results grouped by frame of video and showing number of detected stripelets (frame 1 to frame 20)}
+\label{fig:NumStripeletsvsRates}
+\end{center}
+\end{figure}
+
+\subsubsection{Per Crosswalk Analysis of Results}
+
+For this section, the crosswalk videos were grouped by their respective crosswalks, and the non-crosswalk videos were made as separate groups. The results of that is shown in the appendix tables \ref{tab:appendixcrosswalkresults} and \ref{tab:appendixcrosswalkresultswithoutNeural}, and the summary results are shown in table \ref{tab:crosswalkResultsSummary}. The results are separated into the crosswalks (which have true positive rates) and non-crosswalk videos (which have false positive rates).  There were a couple outliers in each category (crosswalk vs not) that are included in the dataset, and will be investigated in a later section.
+
+Overall, the median true positive rate of the crosswalk videos was 81.25\% $\pm$ 13.07\% with a standard deviation of 25.82\%. The average false positive rate of the non-crosswalk videos was 1.65\% $\pm$ 1.66\% with a standard deviation of 3.29\%.
+The true positives had a rather high standard deviation, which was heavily affected by the one outlier crosswalk, and the false positives were more tightly grouped with a lower standard deviation.
+
+\begin{table}[t]
+    \begin{longtable}[t]{|r|r|r|r|r|r|}
+    \hline
+       & Minimum & Average & Median & Maximum & STD \bigstrut\\
+    \hline
+    True Positive Rates & 1.25\% & 76.42\% & 81.25\% & 98.75\% & 25.82\% \bigstrut\\
+    \hline
+    False Positive Rates & 0.00\% & 1.65\% & 0.00\% & 12.00\% & 3.29\% \bigstrut\\
+    \hline
+
+
+    \caption{Results summary by video/crosswalk}
+    \label{tab:crosswalkResultsSummary} 
+    \end{longtable}
+\end{table}
+
+\subsubsection{Yellow Crosswalks}
+
+In order to determine how well yellow crosswalks worked with white crosswalk training data, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 26\% true positive rate, and the zebra scored 67.5\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data, due to the differing intensity values between the two colors affecting neural network parameters. 
+
+\subsubsection{Challenging Images and Analysis}
+
+The video with the highest amount of false positives (12\%) was 'NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes and sidewalk were incorrectly matched together, which ended up passing the neural network and the validation as a crosswalk. A couple examples are shown in figure \ref{fig:worstFalsePosPic}, one can see the identified stripelets. More neural network parameters may be able to help remove these from the stripelet set, perhaps something relating to the vertical pixel intensity. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{NonCWorstCwalk.png}
+\captionfonts
+\caption[Worst False Positive Examples]{Example frames from 'NonC Output Night 13,' the video with the highest amount of false positives.}
+\label{fig:worstFalsePosPic}
+\end{center}
+\end{figure}
+
+Another video with a high amount of false positives (7\%) was 'NonC Output Night 11,' which is a of a parking lot with many horizontal lines painted throughout.  A few pictures are shown in figure \ref{fig:2ndworstFalsePosPic}. These examples aren't typically what one would expect to see if they were trying to cross the street, but they are lines that look similar to a zebra crosswalk. They could potentially be filtered out by using some sort of expected width vs Y axis level in the image. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{NonC2ndWorstCwalk.png}
+\captionfonts
+\caption[Second Worst False Positive Examples]{Example frames from 'NonC Output Night 11,' the video with the second highest amount of false positives.}
+\label{fig:2ndworstFalsePosPic}
+\end{center}
+\end{figure}
+
+One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown in figure \ref{fig:worstcwalk}. Only one of eighty (1.25\%) frames was correctly identified in this crosswalk, whereas the next lowest crosswalk had 57\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This crosswalk had very odd pavement coloring, which may have contributed to why it failed the neural network.  Potentially this issue could be solved by more training data and including more odd crosswalks such as this one. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{WorstCwalk.png}
+\captionfonts
+\caption[Examples of worst crosswalk]{Example frames from 'Night hybrid 3,' the crosswalk with the worst true positive rate.}
+\label{fig:worstcwalk}
+\end{center}
+\end{figure}
+
+\subsubsection{Overall Results}
+%\todo[inline]{JASON - Add another evaluation metric here}  
+Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk frames, and using the neural network to cull stripelets before detection, a q-value of .015 is obtained. When not using the neural network to cull the stripelets, the q-value is .148 (see table \ref{tab:overallresults}). Using the neural network garners an improvement of 985\%. In simpler terms, using neural networks, out of 1000 positively predicted images, only 15 would be false positives versus 148 without using the neural predictions. Figure \ref{fig:CrosswalkTruePosWithAndWithout} shows that for every video, the neural network does drop the positive identifications, but figure \ref{fig:VideoFalsePosWithAndWithout} shows that false positive rates dropped drastically as well for every single case. 
+
+
+\begin{table}[t]
+    \begin{longtable}[H]{|r|r|r|r|}
+    \hline
+    \multicolumn{1}{|c|}{Neural Network Enabled} & True Positive Rate & False Positive Rate & q-value \bigstrut\\
+    \hline
+    YES & 91.50\% & 19.69\% & 0.148 \bigstrut\\
+    \hline
+    NO & 76.42\% & 1.44\% & 0.015 \bigstrut\\
+    \hline
+
+    \caption[Overall Results of Crosswalk Detection With and Without Neural Networks]{Overall results of crosswalk detection with/without neural networks -  improvement of 985\%}
+    \label{tab:overallresults} 
+    \end{longtable}
+\end{table}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{CrosswalkTruePosWithAndWithout.png}
+\captionfonts
+\caption[Crosswalk True Positive Rate with and without Neural Network]{Shows the true positive rates per crosswalk with and without the neural network enabled}
+\label{fig:CrosswalkTruePosWithAndWithout}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{VideoFalsePosWithAndWithout.png}
+\captionfonts
+\caption[Video False Positive Rate with and without Neural Network]{Shows the false positive rates per video with and without the neural network enabled}
+\label{fig:VideoFalsePosWithAndWithout}
+\end{center}
+\end{figure}
+
+\subsection{Crosswalk Boundary Line Drawing Results}
+
+A subset of 180 images were selected to test the crosswalk boundary drawing and had their boundary lines manually drawn. A metric was needed in order to compare the correct line with the estimated line. The metric used involved taking multiple points that were equidistant along the estimated line and finding the normal distance to the manually drawn line. These distances were then summed up to give a general gauge of how close lines were together. Exactly identical lines would have a difference value of zero, while more distinct lines would have greater values. Some example images with their evaluation result values are shown in figure \ref{fig:LinesUsingJustGoodStartAndEnds2}. Overall, the results were rather promising, with the vast majority of lines from images with a recognized crosswalk being close to correct with a median measure of 66 and only 10\% of the lines being over the threshold of 400. As shown in figure \ref{fig:400Metric}, 400 was a generous measure, because even at 400, the lines are still close enough.  If the stripelets are predicted properly, and a crosswalk is recognized, the edges of the stripelets are almost guaranteed to be good metrics of the crosswalk edges.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{LinesUsingJustGoodStartAndEnds2.png}
+\captionfonts
+%Jeneeplz what term for "left evaluation value"
+\caption[Boundary Line Estimation Results]{Orange and red dots are the right and left points used. Green is the manually drawn boundary. Blue is the estimated boundary. Left to right: (a) Left evaluation metric of 38, right 34. (b) left: 178, right: 135. (c) left: 235, right: 90}
+\label{fig:LinesUsingJustGoodStartAndEnds2}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=12cm]{400RightSide.png}
+\captionfonts
+%Jeneeplz what term for "left evaluation value"
+\caption[Upper Limit of Boundary Line Metric]{Orange and red dots are the right and left points used. Green is the manually drawn boundary. Blue is the estimated boundary. The evaluation metric on the right side is 400, which is considered the high range of acceptable}
+\label{fig:400Metric}
+\end{center}
+\end{figure}
+
+
+\chapter{Future Work}
+\label{future work}
+
+\section{Conversion to phone app}
+
+The project was written entirely in the C++ libraries provided by OpenCV, which can be ported easily to a mobile app without many changes. Once the algorithm has access to phone sensors, there are opportunities to implement improvements. The current algorithm assumes that the photos are taken parallel to the horizon, but with access to a phone's sensors, the image frames could be adjusted so that they are guaranteed to be in the correct horizontal orientation. The accelerometer and gyroscope sensors could also be used to help track movement as the user crosses a crosswalk. Using sensors, anything above the horizon line could be discarded \cite{Crosswatch2Lane}. Other mobile technologies such as Project Tango's 3d mapping hardware \cite{projectTango} could be used as well to assist with spatial awareness and other factors such as detecting obstructions that must be avoided. Once the program is converted to a mobile app, there are many interesting ways that it could progress.
+
+\section{Crosswalks with shadows}
+
+As this project did not cover crosswalks with shadows, future work could be done to adapt the algorithm so it can work properly with crosswalks that have shadows inside of them. The current algorithm has difficulties with shadows; one issue is that the Hough line transform might have issues because shadows form strong lines, and another being that some of the neural network training parameters might be drastically different with shadows inside of the stripelets. 
+
+One option might be shadow removal algorithms that would remove the shadows so that the main algorithm doesn't have to account for them at all. This could be a good solution because it would require modifying the current algorithm, but might not the fastest. Shadow removal algorithms are quite common, so there would be many different options \cite{shadowRemoval}. Another potential solution would be to modify the current algorithm to handle the shadows. This method would likely involve modifying the Hough lines grouping, as well as using different or modified training parameters for the neural network, and require additional training data including crosswalks with different types of shadows at various times of day. 
+
+\section{More Training Parameters for Neural Network}
+
+The portion of the algorithm that uses neural networks to predict whether or not stripelets are part of the crosswalk would benefit from more investigation into new metrics that would aid the neural network. Investigating new parameters is not a costly procedure in terms of time, and it is not difficult to discover whether a training parameter is working well or not after a single attempt, so it would be worth the investment.  
+
+\section{Detection of Crosswalk Boundary Lines}
+
+Ideally, the algorithm could be improved in detection of the edges of the crosswalk in order to assist the user in navigating across the intersection. One large improvement would be to trend the lines and values along multiple sequential frames to give a more accurate measurement. More experimentation could lead to better methods of doing this as well. 
+
+\section{Use Neural Network for Comparing Two Stripelets in Crosswalk Detection}
+
+Currently, the algorithm is using a few different metrics in order to predict whether two stripelets could be a part of the same crosswalk or not. A neural network could be applied to this decision instead, in order to potentially garner a better result. The same parameters that are being manually used currently would be a good starting point for neural network parameters, as well as the other parameters currently being used by the neural network for stripelet prediction. 
+
+\section{Performance Improvements}
+
+The algorithm contains some areas where the performance could be improved. In this proof of concept, speed isn't as important, so the algorithm is not as optimized as it could be. If it is ported to a phone app, the optimizations would become necessary for a real world usage scenario.
+
+\subsection{Multithreading}
+One specific improvement would be to take advantage of multiple CPU cores in order to process multiple frames at the same time. This would improve the throughput and allow greater accuracy due being able to quickly to average the results of frames that are immediately next to each other.
+The current implementation running on a decent PC can run at around 1.6 frames per second, and would scale linearly with the number of cores, so if one core is currently 1.6 frames per second, then two cores would be 3.2 frames per second, thus multithreading would give a large performance boost for this application. Multithreading would also be extremely beneficial for the crosswalk side edge detection, because running multiple sequential frames at the same time would allow a more accurate prediction.
+
+\subsection{Finding the Smallest Image Size Necessary}
+Another improvement would be to try to find the smallest image size necessary for the algorithm to detect the position of the crosswalk. The smaller the image is, the faster the processing time will be because there are fewer pixels for every operation. This could be discovered by running the algorithm on smaller and smaller crosswalks and finding out when the predictions start degrading to an unacceptable level. The performance would drastically improve, because as the image dimensions are cut in half, the number of pixels are divided by four, which scales almost directly with the runtime because many operations are performed on each pixel, and those operation's runtimes would divided by four. 
+
+\chapter{Conclusion}
+\label{conclusion}
+%What I did ( couple sentences), why I did it (more), why I think they worked or didn't work  (biggest)
+%more about future uses and less about results
+
+This project incorporated neural networks into a process of recognizing zebra stripe crosswalks in images/video in order to determine its effectiveness in aiding a blind user. 
+
+Neural networks are used in many image processing platforms, but it doesn't seem like anyone had tried to use neural networks for recognizing zebra crosswalks before.
+
+An improvement of about 985\% increase in q-value was seen when comparing the same code using neural networks vs not using neural networks on the same dataset. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. It would definitely be worth looking into this method further for real world use. 
+
+
+
+
+
+
+
+% ------------- End main chapters ----------------------
+
+\clearpage
+\bibliography{bibliography}
+\bibliographystyle{plain}
+%\addcontentsline{toc}{chapter}{Bibliography}
+
+\chapter{Appendix}
+
     \begin{longtable}{| r | r | r | r |}
     \hline
     Neurons in Hidden Layer & True Positive Rate & False Positive Rate & q-value \bigstrut\\
@@ -572,351 +943,11 @@ There is no real consensus on exactly how many hidden layers and neurons should 
 
     \hline
     \caption{Crosswalk identification results from neural network training with different hidden layer configurations}
-    \label{tab:NN-HiddenLayersResults} 
+    \label{tab:NN-HiddenLayersResultsAPP} 
     \end{longtable}
-\end{center}
 
-As shown in table \ref{tab:NN-HiddenLayersResults}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
 
-\todo[inline]{JASON - redo fig \ref{fig:Neural1png} in graphvis with correct values for updated NN}
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{Neural1.png}
-\captionfonts
-\caption[Final Neural Network Configuration]{Final neural network configuration showing input layers, hidden layers, and output layers}
-\label{fig:Neural1png}
-\end{center}
-\end{figure}
 
-\subsection{Neural Network Results}
-%JeneePlz
-%This is the results for different videos and their neural network results
-
-\todo[inline]{JASON - Ensure numbers are up to date}
-The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the q-value. The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The Q value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 16\% of the positive results were incorrect. 
-    
-\begin{center}
-    \begin{longtable}{|r|r|r|r|}
-    \hline
-    Number of Stripelets & True Pos Rate & False Pos Rate & Q-Val \bigstrut\\
-    \hline
-    19461 & 77.61\% & 3.57\% & 0.1663 \bigstrut\\
-    \hline
-
-    \caption{Neural Network results}
-    \label{tab:nnresultsoverall} 
-    \end{longtable}
-\end{center}
-
-
-
-\subsection{Crosswalk Detection}
-Once the neural network has finished culling stripelets, the remaining stripelets are then fed through the crosswalk detection algorithm. The results are again categorized by type of crosswalk, time of day, etc. 
-
-\subsubsection{Effect of Different Video Angles}
-
-There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle across many crosswalks. Examples of each angle are shown in figure \ref{fig:AllFiveAngles}. The low angle had worse results than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification. A few examples are given in figure \ref{fig:downBadPic}. The poor results from the bad video angle show that in an actual use case, that angle must be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle can be removed from the overall dataset. 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=15cm]{DownBad.png}
-\captionfonts
-\caption[Low Angle Video Examples]{Examples of the low angle video that garnered poor results}
-\label{fig:downBadPic}
-\end{center}
-\end{figure}
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=15cm]{AllFiveAngles.png}
-\captionfonts
-\caption[All Five Different Crosswalk Angles]{All five angles which videos were taken of the crosswalks. Left to right: (a) Low Angle (b) Left Side (c) Standard (d) Right Side (e) High Angle}
-\label{fig:AllFiveAngles}
-\end{center}
-\end{figure}
-
-\begin{center}
-    \begin{longtable}{|r|r|}
-    \hline
-    Camera Angle & True Positive Rate \bigstrut\\
-    \hline
-    Low Angle & 45.33\% \bigstrut\\
-    \hline
-    Left Side & 76.67\% \bigstrut\\
-    \hline
-    Standard & 78.00\% \bigstrut\\
-    \hline
-    Right Side & 77.00\% \bigstrut\\
-    \hline
-    High Angle & 74.00\% \bigstrut\\
-    \hline
-
-
-    \caption{Results of crosswalk detection categorized by video angle}
-    \label{tab:downbad} 
-    \end{longtable}
-\end{center}
-
-\subsubsection{Effect of Time of Day}
-Each crosswalk was categorized by time of day, morning, midday and night, to see if that had any effect on the prediction rates. The results are shown in table \ref{tab:timeofday}. There were 300 crosswalk frames for each different time of day. The results for each time of day were rather close together, with a slight increase for morning. This might have to do with the lighting causing the image to be more easy to categorize during the morning hours. This data shows that different lighting caused by different time of day did not seem to be a strong factor in the results.
-
-\begin{center}
-    \begin{longtable}{| r | r | r |}
-    \hline
-    Time of Day & True Positive Rate \bigstrut\\
-    \hline
-    Morning & 78.25\% \bigstrut\\
-    \hline
-    Midday & 75.25\% \bigstrut\\
-    \hline
-    Night & 75.75\% \bigstrut\\
-    \hline
-
-    \caption{Results of crosswalk detection categorized by time of day}
-    \label{tab:timeofday} 
-    \end{longtable}
-\end{center}
-
-\subsubsection{Zebra Crosswalk Versus Hybrid Crosswalk}
-\todo[inline]{JASON - zebra vs hybrid make table work right}
-
-The true positive percent results of zebra stripe and hybrid crosswalks detection are shown in table \ref{tab:typeOfCwalk}. There were nine zebra stripe crosswalks in the dataset, and six hybrids. The least accurately predicted crosswalk was in the hybrid dataset, leading to a much higher standard deviation. The zebra crosswalks were predicted more consistently, leading to a lower standard deviation and higher true positive percents. The training data was  biased towards zebra crosswalks, with three hybrids trained versus nine zebra crosswalks. As shown in the table \ref{tab:typeOfCwalk}, the zebra crosswalk median true positive rate only dropped about 3\%, with the introduction of the neural network, while the hybrid median dropped almost 27\% after neural network application. The hybrid crosswalks observed in the area these videos were taken appeared to more frequently have paint irregularities than the zebra crosswalks, potentially due to different maintenance methods by the municipality, as shown in Figure \ref{fig:poorlyPaintedHybrid}, which could also explain the discrepancy. One of the neural network parameters regarding the pixel intensity of the area surrounding the stripelet would also be different for hybrid versus zebra, because hybrids would have a higher value due to the white lines on the sides being part of their surroundings. It is likely that adding more hybrid crosswalks to the training dataset would improve their results.
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{PoorlyPaintedHybrid.png}
-\captionfonts
-\caption[Poorly Painted Hybrid Crosswalk]{Poorly painted hybrid crosswalk}
-\label{fig:poorlyPaintedHybrid}
-\end{center}
-\end{figure}
-
-\begin{center}
-    \begin{longtable}[H]{|r|r|r|r|r|r|r|}
-    \hline
-    Type & \multicolumn{1}{l|}{Neural Network Enabled} & Min & Avg & Median & Max & STD \bigstrut\\
-    \hline
-    Hybrid & YES & 1.25\% & 59.17\% & 65.00\% & 86.25\% & 30.51\% \bigstrut\\
-    \hline
-    Hybrid & NO & 37.50\% & 83.75\% & 91.88\% & 98.75\% & 23.06\% \bigstrut\\
-    \hline
-    Zebra & YES & 56.25\% & 87.92\% & 95.00\% & 98.75\% & 14.59\% \bigstrut\\
-    \hline
-    Zebra & NO & 86.25\% & 96.67\% & 98.75\% & 100.00\% & 4.51\% \bigstrut\\
-    \hline
-
-    \caption{True positive percent results of crosswalk detection categorized by type of crosswalk}
-    \label{tab:typeOfCwalk} 
-    \end{longtable}
-\end{center}
-
-\subsubsection{Prediction Rate Related to Progression Through Crosswalk}
-\todo[inline]{DR. SENG - Any suggestions on this title?}
-
-As the user walks across the crosswalk, the view of the crosswalk changes and the algorithm needs to continue guiding them. For each crosswalk, 20 frames equidistant throughout the video were used. The expected result of this is that there would be a decrease in true positive rate as the user progresses because there will be fewer stripelets in the image to work with. The data shown in figure \ref{fig:graphOfFrameCount} shows exactly that. The neural network made the rate go down as one would expect, but the drop seemed to increase as the end of the crosswalk was reached. This may be because the training data may be more biased to earlier frames, since the early frames are guaranteed to have more stripelets. In figure \ref{fig:NumStripeletsvsRates}, we can also see that the number of stripelets in each image as the video went on became fewer as the user crossed the crosswalk, but the predictions of the stripelets stayed mostly consistent throughout. 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{FrameResultsGraph.png}
-\captionfonts
-\caption[Neural Network True Positives Grouped by Frame of Video]{True positive results grouped by frame of video (frame 1 to frame 20)}
-\label{fig:graphOfFrameCount}
-\end{center}
-\end{figure}
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=12cm]{NumStripeletsvsRates.png}
-\captionfonts
-\caption[True and False Positives Grouped by Frame of Video and Number of Stripelets]{True and false positive results grouped by frame of video and showing number of detected stripelets (frame 1 to frame 20)}
-\label{fig:NumStripeletsvsRates}
-\end{center}
-\end{figure}
-
-\subsubsection{Accuracy of Prediction by Crosswalk}
-\todo[inline]{DR. SENG - any suggestions for a better title?}
-
-For this section, the crosswalk videos were grouped by their respective crosswalks, and the non-crosswalk videos were made as separate groups. The results of that is shown in the appendix tables \ref{tab:appendixcrosswalkresults} and \ref{tab:appendixcrosswalkresultswithoutNeural}, and the summary results are shown in table \ref{tab:crosswalkResultsSummary}. The results are separated into the crosswalks (which have true positive rates) and non-crosswalk videos (which have false positive rates).  There were a couple outliers in each category (crosswalk vs not) that are included in the dataset, and will be investigated in a later section.
-
-Overall, the median true positive rate of the crosswalk videos was 81.25\% $\pm$ 13.07\% with a standard deviation of 25.82\%. The average false positive rate of the non-crosswalk videos was 1.65\% $\pm$ 1.66\% with a standard deviation of 3.29\%.
-The true positives had a rather high standard deviation, which was heavily affected by the one outlier crosswalk, and the false positives were more tightly grouped with a lower standard deviation.
-
-\begin{center}
-    \begin{longtable}[H]{|r|r|r|r|r|r|}
-    \hline
-       & Minimum & Average & Median & Maximum & STD \bigstrut\\
-    \hline
-    True Positive Rates & 1.25\% & 76.42\% & 81.25\% & 98.75\% & 25.82\% \bigstrut\\
-    \hline
-    False Positive Rates & 0.00\% & 1.65\% & 0.00\% & 12.00\% & 3.29\% \bigstrut\\
-    \hline
-
-
-    \caption{Results summary by video/crosswalk}
-    \label{tab:crosswalkResultsSummary} 
-    \end{longtable}
-\end{center}
-
-\subsubsection{Yellow Crosswalks}
-
-In order to determine how well yellow crosswalks worked with white crosswalk training data, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 26\% true positive rate, and the zebra scored 67.5\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data, due to the differing intensity values between the two colors affecting neural network parameters. 
-
-\subsubsection{Issues Found and Room for Improvement}
-\todo[inline]{DR. SENG -  any suggestions for a better title?}
-
-The video with the highest amount of false positives (12\%) was 'NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes and sidewalk were incorrectly matched together, which ended up passing the neural network and the validation as a crosswalk. A couple examples are shown in figure \ref{fig:worstFalsePosPic}, one can see the identified stripelets. More neural network parameters may be able to help remove these from the stripelet set, perhaps something relating to the vertical pixel intensity. 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{NonCWorstCwalk.png}
-\captionfonts
-\caption[Worst False Positive Examples]{Example frames from 'NonC Output Night 13,' the video with the highest amount of false positives.}
-\label{fig:worstFalsePosPic}
-\end{center}
-\end{figure}
-
-Another video with a high amount of false positives (7\%) was 'NonC Output Night 11,' which is a of a parking lot with many horizontal lines painted throughout.  A few pictures are shown in figure \ref{fig:2ndworstFalsePosPic}. These examples aren't typically what one would expect to see if they were trying to cross the street, but they are lines that look similar to a zebra crosswalk. They could potentially be filtered out by using some sort of expected width vs Y axis level in the image. 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=14cm]{NonC2ndWorstCwalk.png}
-\captionfonts
-\caption[Second Worst False Positive Examples]{Example frames from 'NonC Output Night 11,' the video with the second highest amount of false positives.}
-\label{fig:2ndworstFalsePosPic}
-\end{center}
-\end{figure}
-
-One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown in figure \ref{fig:worstcwalk}. Only one of eighty (1.25\%) frames was correctly identified in this crosswalk, whereas the next lowest crosswalk had 57\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This crosswalk had very odd pavement coloring, which may have contributed to why it failed the neural network.  Potentially this issue could be solved by more training data and including more odd crosswalks such as this one. 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=14cm]{WorstCwalk.png}
-\captionfonts
-\caption[Examples of worst crosswalk]{Example frames from 'Night hybrid 3,' the crosswalk with the worst true positive rate.}
-\label{fig:worstcwalk}
-\end{center}
-\end{figure}
-
-\subsubsection{Overall Results}
-  \todo[inline]{JASON - Add another evaluation metric here}  
-Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk frames, and using the neural network to cull stripelets before detection, a q-value of .015 is obtained. When not using the neural network to cull the stripelets, the q-value is .148 (see table \ref{tab:overallresults}). Using the neural network garners an improvement of 985\%. In simpler terms, using neural networks, out of 1000 positively predicted images, only 15 would be false positives versus 148 without the neural predictions. Figure \ref{fig:CrosswalkTruePosWithAndWithout} shows that for every video, the neural network does drop the positive identifications, but figure \ref{fig:VideoFalsePosWithAndWithout} shows that false positive rates dropped drastically as well for every single case. 
-
-
-\begin{center}
-    \begin{longtable}[H]{|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|c|}{Neural Network Enabled} & True Positive Rate & False Positive Rate & q-value \bigstrut\\
-    \hline
-    YES & 91.50\% & 19.69\% & 0.148 \bigstrut\\
-    \hline
-    NO & 76.42\% & 1.44\% & 0.015 \bigstrut\\
-    \hline
-
-    \caption{Overall results of crosswalk detection with/without neural networks -  improvement of 985\%}
-    \label{tab:overallresults} 
-    \end{longtable}
-\end{center}
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{CrosswalkTruePosWithAndWithout.png}
-\captionfonts
-\caption[Crosswalk True Positive Rate with and without Neural Network]{Shows the true positive rates per crosswalk with and without the neural network enabled}
-\label{fig:CrosswalkTruePosWithAndWithout}
-\end{center}
-\end{figure}
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=10cm]{VideoFalsePosWithAndWithout.png}
-\captionfonts
-\caption[Video False Positive Rate with and without Neural Network]{Shows the false positive rates per video with and without the neural network enabled}
-\label{fig:VideoFalsePosWithAndWithout}
-\end{center}
-\end{figure}
-
-\subsection{Crosswalk Boundary Line Drawing Results}
-
-\todo[inline]{JASON - Add more to this section after some more experimentation}
-
-A subset of images were selected to test the crosswalk boundary drawing and had their boundary lines manually drawn. A metric was needed in order to compare the correct line with the estimated line. The metric used involved taking multiple points that were equidistant along the estimated line and finding the normal distance to the manually drawn line. These distances were then summed up to give a general gauge of how close lines were together. Exactly identical lines would have a difference value of zero, while more distinct lines would have greater values. Some example images with their evaluation result values are shown in figure \ref{fig:LinesUsingJustGoodStartAndEnds2}. Overall, the results were rather promising, with the majority of lines from images with a recognized crosswalk being close to correct. If an image was predicted as a crosswalk, 
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=15cm]{LinesUsingJustGoodStartAndEnds2.png}
-\captionfonts
-%Jeneeplz what term for "left evaluation value"
-\caption[Boundary Line Estimation Results]{Orange and red dots are the right and left points used. Green is the manually drawn correct boundary. Blue is the estimated boundary. Left to right: (a) Left evaluation metric of 38, right 34. (b) left: 178, right: 135. (c) left: 235, right: 90}
-\label{fig:LinesUsingJustGoodStartAndEnds2}
-\end{center}
-\end{figure}
-
-As an experiment, the results looked promising. If a crosswalk was correctly identified, the bounding lines were more or less correct, and could easily be used to guide the user across the crosswalk. 
-
-
-\chapter{Future Work}
-\label{future work}
-
-\section{Conversion to phone app}
-
-The project was written entirely in the C++ libraries provided by OpenCV, which can be ported easily to a mobile app without many changes. Once the algorithm has access to phone sensors, there are opportunities to implement improvements. The current algorithm assumes that the photos are taken parallel to the horizon, but with access to a phone's sensors, the image frames could be adjusted so that they are guaranteed to be in the correct horizontal orientation. The accelerometer and gyroscope sensors could also be used to help track movement as the user crosses a crosswalk. Using sensors, anything above the horizon line could be discarded \cite{Crosswatch2Lane}. Other mobile technologies such as Project Tango's 3d mapping hardware \cite{projectTango} could be used as well to assist with spatial awareness and other factors such as detecting obstructions that must be avoided. Once the program is converted to a mobile app, there are many interesting ways that it could progress.
-
-\section{Crosswalks with shadows}
-
-As this project did not cover crosswalks with shadows, future work could be done to adapt the algorithm so it can work properly with crosswalks that have shadows inside of them. The current algorithm has difficulties with shadows; one issue is that the Hough line transform might have issues because shadows form strong lines, and another being that some of the neural network training parameters might be drastically different with shadows inside of the stripelets. 
-
-One option might be shadow removal algorithms that would remove the shadows so that the main algorithm doesn't have to account for them at all. This could be a good solution because it would require modifying the current algorithm, but might not the fastest. Shadow removal algorithms are quite common, so there would be many different options \cite{shadowRemoval}. Another potential solution would be to modify the current algorithm to handle the shadows. This method would likely involve modifying the Hough lines grouping, as well as using different or modified training parameters for the neural network, and require additional training data including crosswalks with different types of shadows at various times of day. 
-
-\section{More Training Parameters for Neural Network}
-
-The portion of the algorithm that uses neural networks to predict whether or not stripelets are part of the crosswalk would benefit from more investigation into new metrics that would aid the neural network. Investigating new parameters is not a costly procedure in terms of time, and it is not difficult to discover whether a training parameter is working well or not after a single attempt, so it would be worth the investment.  
-
-\section{Detection of Crosswalk Boundary Lines}
-
-Ideally, the algorithm could be improved in detection of the edges of the crosswalk in order to assist the user in navigating across the intersection. One large improvement would be to trend the lines and values along multiple sequential frames to give a more accurate measurement. More experimentation could lead to better methods of doing this as well. 
-
-\section{Use Neural Network for Comparing Two Stripelets in Crosswalk Detection}
-
-Currently, the algorithm is using a few different metrics in order to predict whether two stripelets could be a part of the same crosswalk or not. A neural network could be applied to this decision instead, in order to potentially garner a better result. The same parameters that are being manually used currently would be a good starting point for neural network parameters, as well as the other parameters currently being used by the neural network for stripelet prediction. 
-
-\section{Performance Improvements}
-
-The algorithm contains some areas where the performance could be improved. In this proof of concept, speed isn't as important, so the algorithm is not as optimized as it could be. If it is ported to a phone app, the optimizations would become necessary for a real world usage scenario.
-
-\subsection{Multithreading}
-One specific improvement would be to take advantage of multiple CPU cores in order to process multiple frames at the same time. This would improve the throughput and allow greater accuracy due being able to quickly to average the results of frames that are immediately next to each other.
-The current implementation running on a decent PC can run at around 1.6 frames per second, and would scale linearly with the number of cores, so if one core is currently 1.6 frames per second, then two cores would be 3.2 frames per second, thus multithreading would give a large performance boost for this application. Multithreading would also be extremely beneficial for the crosswalk side edge detection, because running multiple sequential frames at the same time would allow a more accurate prediction.
-
-\subsection{Finding the Smallest Image Size Necessary}
-Another improvement would be to try to find the smallest image size necessary for the algorithm to detect the position of the crosswalk. The smaller the image is, the faster the processing time will be because there are fewer pixels for every operation. This could be discovered by running the algorithm on smaller and smaller crosswalks and finding out when the predictions start degrading to an unacceptable level. The performance would drastically improve, because as the image dimensions are cut in half, the number of pixels are divided by four, which scales almost directly with the runtime because many operations are performed on each pixel, and those operation's runtimes would divided by four. 
-
-\chapter{Conclusion}
-\label{conclusion}
-%\todo[inline]{What I did ( couple sentences), why I did it (more), why I think they worked or didn't work  (biggest)}
-%more about future uses and less about results
-
-This project incorporated neural networks into a process of recognizing zebra stripe crosswalks in images/video in order to determine its effectiveness in aiding a blind user. 
-
-Neural networks are used in many image processing platforms, but it doesn't seem like anyone had tried to use neural networks for recognizing zebra crosswalks before.
-
-An improvement of ~985\% increase in q-value was seen when comparing the same code using neural networks vs not using neural networks on the same dataset. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. It would definitely be worth looking into this method further for real world use. 
-
-
-
-
-
-
-
-% ------------- End main chapters ----------------------
-
-\clearpage
-\bibliography{bibliography}
-\bibliographystyle{plain}
-%\addcontentsline{toc}{chapter}{Bibliography}
-
-\chapter{Appendix}
-
-\begin{center}
     \begin{longtable}{|r|r|r|r|}
     \hline
     Name & Frames & True Positive Rate & False Positive Rate \bigstrut\\
@@ -989,10 +1020,8 @@ An improvement of ~985\% increase in q-value was seen when comparing the same co
     \caption{Results for each crosswalk by name with neural network enabled}
     \label{tab:appendixcrosswalkresults} 
     \end{longtable}
-\end{center}
 
 
-\begin{center}
     \begin{longtable}{|r|r|r|r|}
     \hline
     Name & Frames & True Positive Rate & False Positive Rate \bigstrut\\
@@ -1066,7 +1095,7 @@ An improvement of ~985\% increase in q-value was seen when comparing the same co
     \caption{Results for each crosswalk by name with neural network disabled}
     \label{tab:appendixcrosswalkresultswithoutNeural} 
     \end{longtable}
-\end{center}
+
 
 
 
