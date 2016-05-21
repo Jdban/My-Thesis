@@ -492,7 +492,7 @@ The stripelets that are predicted by the neural network to be part of a crosswal
 
 In order to attempt to draw the boundary lines for the crosswalk, the edges from the stripelets that were positively identified as being part of a crosswalk are used. Three points are taken from the outer edges of the stripelets to assist in predicting the boundary as shown in figure \ref{fig:LinesAndEdgePoints}.  
 
-\begin{figure}[ht]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=14cm]{LinesAndEdgePoints.png}
 \captionfonts
@@ -503,7 +503,7 @@ In order to attempt to draw the boundary lines for the crosswalk, the edges from
 
 RANSAC line fitting is applied to these points in order to fit a line that is the approximation of the edge line, shown in figure \ref{fig:LinesUsingJustGoodStartAndEnds}. 
 
-\begin{figure}[ht]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=7cm]{LinesUsingJustGoodStartAndEnds.png}
 \captionfonts
@@ -1102,3 +1102,4 @@ An improvement of about 985\% increase in q-value was seen when comparing the sa
 
 
 \end{document}
+d
