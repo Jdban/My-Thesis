@@ -45,8 +45,8 @@
 \usepackage{longtable}
 \usepackage{amssymb}
 \usepackage{amsmath}
-%\usepackage[letterpaper]{geometry}  %ORIG
-\usepackage[letterpaper,footskip=.25in]{geometry} %http://tex.stackexchange.com/questions/47202/how-to-keep-page-numbering-below-text
+\usepackage[letterpaper]{geometry}  %ORIG
+%\usepackage[letterpaper,footskip=.25in]{geometry} %http://tex.stackexchange.com/questions/47202/how-to-keep-page-numbering-below-text
 \usepackage[overload]{textcase}
 \usepackage{multirow}
 \usepackage{bigstrut}
@@ -527,34 +527,34 @@ This project was done entirely in OpenCV 3.0 using their C++ libraries. The comp
 %what data was used, where it came from, what was trained, etc.
 \subsection{Dataset}
 %JeneePlz
-The data used for the results were a selection of videos from multiple white crosswalks and streets without crosswalks taken at and around street intersections. The videos were taken at multiple times of day ranging from early morning to early night. For each crosswalk, five videos were taken going the same direction across the crosswalk. The videos were a high angle, a low angle, walking on the left side, on the right side, and a walking in the center.  Videos were given categories: time of day, angle of video, type of crosswalk, color, crosswalk title, and . Crosswalks were marked to be used only for training the neural network, and other crosswalks marked only to be used for evaluating results. All data in the results section is generated from videos that were never used in the training process of the neural network. Over 14,000 stripelets were marked by hand as part of a crosswalk or not part of a crosswalk for use when training the neural network, and over 18,000 manually marked stripelets were used for the output. Each crosswalk video only used 20 frames, whereas videos without crosswalk may have used more. Hybrid crosswalks were included as well because they were working with the algorithm as well. 
+The data used for the results were a selection of videos from multiple white crosswalks and streets without crosswalks taken at and around street intersections. The videos were taken at multiple times of day ranging from early morning to early night. For each crosswalk, five videos were taken going the same direction across the crosswalk. The videos were a high angle, a low angle, walking on the left side, on the right side, and a walking in the center.  Videos were given categories: time of day, angle of video, type of crosswalk, color, crosswalk title, and . Crosswalks were marked to be used only for training the neural network, and other crosswalks marked only to be used for evaluating results. The training set contained three hybrid crosswalks, six zebra crosswalks, and ten videos that did not include crosswalks. The result testing set contained three hybrid crosswalks, nine zebra crosswalks, and eighteen videos that did not include crosswalks. All data in the results section is generated from videos that were never used in the training process of the neural network. Over 14,000 stripelets were marked by hand as part of a crosswalk or not part of a crosswalk for use when training the neural network, and over 18,000 manually marked stripelets were used for the output. Each crosswalk video only used 20 frames, whereas videos without crosswalk may have used more. Hybrid crosswalks were included as well because they were working with the algorithm as well. 
 
 
 %How Neural Networks are used here (explain some of the experimentation around different layers, and how they didn't do much)
-\subsection{Neural Network Usage}
+\subsection{Neural Network Configuration}
 %Jeneeplz
 For this project, neural networks are used for the prediction of stripelets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 15 neurons. 
 
 %D:\Users\SandyBridge\Dropbox\Thesis\My Paper Stuff\Results\Results of NN Training with diff neurons.xlsx
-    \begin{table}[t]
-        \begin{longtable}{| r | r | r | r |}
-        \hline
-        Neurons in Hidden Layer & True Positive Rate & False Positive Rate & q-value \bigstrut\\
-        \hline
-        15 & 74.42\% & 2.36\% & 0.086 \bigstrut\\
-        \hline
-        \caption[Selected Neural Network Configuration Results]{Crosswalk identification results from neural network training with selected hidden layer configuration}
-        \label{tab:NN-HiddenLayersResults} 
-        \end{longtable}
-    \end{table}
+%    \begin{table}[t]
+%%        \begin{longtable}{| r | r | r | r |}
+ %       \hline
+ %       Neurons in Hidden Layer & True Positive Rate & False Positive Rate & q-value \bigstrut\\
+ %       \hline
+ %       15 & 74.42\% & 2.36\% & 0.086 \bigstrut\\
+ %       \hline
+ %       \caption[Selected Neural Network Configuration Results]{Stripelet identification results from neural network training with selected hidden layer configuration}
+ %       \label{tab:NN-HiddenLayersResults} 
+ %       \end{longtable}
+ %   \end{table}
 
-There is no real consensus on exactly how many hidden layers and neurons should be used in the perfect neural network. The different rules of thumb\cite{Heaton:2008:INN:1502373} have been that no more than one hidden layer is typically needed, and the number of neurons should be between the number of inputs and the number of outputs, and layers must have more than one neuron. With those being the guidelines, one hidden layer with a number of neurons mostly ranging from the number of inputs to the number of outputs was chosen with a range from 2 to 22 neurons in the hidden layer. Other combinations of these training parameters were tried as well, with none having better results than using all eleven parameters. 
+There is no real consensus on exactly how many hidden layers and neurons should be used in the perfect neural network configuration. The different rules of thumb\cite{Heaton:2008:INN:1502373} have been that no more than one hidden layer is typically needed, and the number of neurons should be between the number of inputs and the number of outputs, and layers must have more than one neuron. With those being the guidelines, one hidden layer with a number of neurons mostly ranging from the number of inputs to the number of outputs was chosen with a range from 2 to 22 neurons in the hidden layer. Subsets of these training parameters were tried as well, with none having better results than using all eleven parameters. 
 
 
 
-As shown in table \ref{tab:NN-HiddenLayersResults} (more data shown in the appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
+As shown in appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 15 hidden layers had the lowest false positive rate of 2.36\%, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
 
-\begin{figure}[ht]
+\begin{figure}[t]
 \begin{center}
 \includegraphics[width=10cm]{ChosenNN2.png}
 \captionfonts
@@ -570,18 +570,18 @@ As shown in table \ref{tab:NN-HiddenLayersResults} (more data shown in the appen
     \begin{table}[t]
         \begin{longtable}{|r|r|r|r|}
         \hline
-        Number of Stripelets & True Pos Rate & False Pos Rate & Q-Val \bigstrut\\
+        Number of Stripelets & True Pos Rate & False Pos Rate & q-value \bigstrut\\
         \hline
         19461 & 77.61\% & 3.57\% & 0.1663 \bigstrut\\
         \hline
     
-        \caption{Neural Network results}
+        \caption{Neural Network results over stripelets in final dataset}
         \label{tab:nnresultsoverall} 
         \end{longtable}
     \end{table}
 
 
-The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the q-value. The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The Q value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 16\% of the positive results were incorrect. 
+The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the false discovery rate (also known as q-value). The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The q-value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 16\% of the positive results were incorrect. 
     
 
 
@@ -1102,4 +1102,3 @@ An improvement of about 985\% increase in q-value was seen when comparing the sa
 
 
 \end{document}
-d
