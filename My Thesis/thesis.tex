@@ -42,6 +42,10 @@
 
 \graphicspath{ {Images/} }
 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} 
+
 \usepackage{longtable}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -129,7 +133,7 @@ This method improves the accuracy of zebra crosswalk detection in images. In a l
 \end{abstract}
 
 \begin{acknowledgements}
-I would like to thank my parents, my girlfriend, and Dr. Seng for their support.
+I would like to thank my parents, Ann and Steve Banich, my girlfriend, Jenée Smith, and my thesis advisor, Dr. Seng, for their support.
 %\todo[inline]{JASON - finish this, worded terribly}
 \end{acknowledgements}
 
@@ -349,7 +353,7 @@ Backpropagation is a method of training neural networks by adjusting weights bac
 Some image constraints were chosen for this scope of this paper because they would have been difficult to incorporate into this algorithm and were not necessary for a proof of concept implementation.
 
 \begin{itemize}
-\item All images are taken roughly horizontally to the crosswalk.
+\item All images are taken horizontally.
 \end{itemize}
 
 As detailed in future work, odd image angles can be very easily accounted for using the sensors of a phone, and the frame being horizontal makes image processing easier. Being able to assume that all true stripelets are horizontal removes them from the sample early on for being too vertical, or having a slope that is too far from the horizon. 
@@ -592,7 +596,7 @@ Once the neural network has finished culling stripelets, the remaining stripelet
 
 \subsubsection{Effect of Different Video Angles}
 
-There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle across many crosswalks. Examples of each angle are shown in figure \ref{fig:AllFiveAngles}. The low angle had worse results than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification. A few examples are given in figure \ref{fig:downBadPic}. The poor results from the bad video angle show that in an actual use case, that angle must be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle can be removed from the overall dataset. 
+There were five different angles used for the videos of the crosswalks, with 340 frames of video at each angle across many crosswalks. Examples of each angle are shown in figure \ref{fig:AllFiveAngles}. The low angle had worse correct prediction rates than the others, as shown in table \ref{tab:downbad}. The reason for this is that the cell phone camera was angled too low to capture enough stripelets for a positive identification. A few examples are given in figure \ref{fig:downBadPic}. The poor results from the bad video angle show that in an actual use case, that angle must be disallowed. The user could be trained to hold the cell phone camera at the proper angle, and if they did not, the sensors would allow the application to notify the user to adjust the camera angle. Because of this, the videos taken at that downward angle will be removed from the overall dataset. 
 
 \begin{figure}[t]
 \begin{center}
@@ -613,21 +617,20 @@ There were five different angles used for the videos of the crosswalks, with 340
 \end{figure}
 
 \begin{table}[t]
-    \begin{longtable}{|r|r|}
+    \begin{longtable}{|r|r|r|}
     \hline
-    Camera Angle & True Positive Rate \bigstrut\\
+    Camera Angle & True Positive Rate & False Positive Rate \bigstrut\\
     \hline
-    Low Angle & 45.33\% \bigstrut\\
+    Low Angle & 45.33\% & 0.00\% \bigstrut\\
     \hline
-    Left Side & 75.33\% \bigstrut\\
+    Left Side & 75.33\% & 1.33\% \bigstrut\\
     \hline
-    Standard & 77.67\% \bigstrut\\
+    Standard & 77.67\% & 0.33\% \bigstrut\\
     \hline
-    Right Side & 76.67\% \bigstrut\\
+    Right Side & 76.67\% & 0.33\% \bigstrut\\
     \hline
-    High Angle & 73.67\% \bigstrut\\
+    High Angle & 73.67\% & 0.33\% \bigstrut\\
     \hline
-
 
     \caption{Results of crosswalk detection categorized by video angle}
     \label{tab:downbad} 
@@ -640,16 +643,17 @@ There were five different angles used for the videos of the crosswalks, with 340
 Each crosswalk was categorized by time of day, morning, midday and night, to see if that had any effect on the prediction rates. The results are shown in table \ref{tab:timeofday}. There were 300 crosswalk frames for each different time of day. The results for each time of day were rather close together, with a slight increase for morning. This might have to do with the lighting causing the image to be more easy to categorize during the morning hours. This data shows that different lighting caused by different time of day did not seem to be a strong factor in the results.
 
 \begin{table}[t]
-    \begin{longtable}{| r | r | r |}
+    \begin{longtable}{|r|r|r|}
     \hline
-    Time of Day & True Positive Rate \bigstrut\\
+    Time of Day & True Positive Rate & False Positive Rate \bigstrut\\
     \hline
-    Morning & 78.20\% \bigstrut\\
+    Morning & 78.20\% & 0.20\% \bigstrut\\
     \hline
-    Midday & 74.94\% \bigstrut\\
+    Midday & 74.94\% & 0.94\% \bigstrut\\
     \hline
-    Night & 75.69\% \bigstrut\\
+    Night & 75.69\% & 1.36\% \bigstrut\\
     \hline
+
 
     \caption{Results of crosswalk detection categorized by time of day}
     \label{tab:timeofday} 
@@ -852,7 +856,11 @@ A subset of 180 images were selected to test the crosswalk boundary drawing and 
 
 The project was written entirely in the C++ libraries provided by OpenCV, which can be ported easily to a mobile app without many changes. Once the algorithm has access to phone sensors, there are opportunities to implement improvements. The current algorithm assumes that the photos are taken parallel to the horizon, but with access to a phone's sensors, the image frames could be adjusted so that they are guaranteed to be in the correct horizontal orientation. The accelerometer and gyroscope sensors could also be used to help track movement as the user crosses a crosswalk. Using sensors, anything above the horizon line could be discarded \cite{Crosswatch2Lane}. Other mobile technologies such as Project Tango's 3-D mapping hardware \cite{projectTango} could be used as well to assist with spatial awareness and other factors such as detecting obstructions that must be avoided. Once the program is converted to a mobile app, there are many interesting ways that it could progress.
 
-\section{Crosswalks with shadows}
+\section{Improving Stripelet Detection}
+
+The stripelets that are detected and fed into the neural network could have been more accurate. Different pixel grouping methods to group the detected edges into lines might result in improved stripelets, which would lead to a more accurate input for the neural network and improve detection.
+
+\section{Crosswalks With Shadows}
 
 As this project did not cover crosswalks with shadows, future work could be done to adapt the algorithm so it can work properly with crosswalks that have shadows inside of them. The current algorithm has difficulties with shadows; one issue is that the Hough line transform might have issues because shadows form strong lines, and another being that some of the neural network training parameters might be drastically different with shadows inside of the stripelets. 
 
@@ -886,11 +894,13 @@ Another improvement would be to try to find the smallest image size necessary fo
 %What I did ( couple sentences), why I did it (more), why I think they worked or didn't work  (biggest)
 %more about future uses and less about results
 
-This project incorporated neural networks into a process of recognizing zebra stripe crosswalks in images/video in order to determine its effectiveness in aiding a blind user. 
+This project incorporated neural networks into a process of recognizing zebra stripe crosswalks in images. This process may be effective in aiding a visually impaired user across a crosswalk. 
 
-Neural networks are used in many image processing platforms, but it doesn't seem like anyone had tried to use neural networks for recognizing zebra crosswalks before.
+Neural networks are used in many image processing platforms, but they haven't yet been applied to recognizing zebra crosswalks in this way.
 
-An improvement of about 887\% increase in q-value was seen when comparing the same code using neural networks vs not using neural networks on the same dataset. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. It would definitely be worth looking into this method further for real world use. 
+%An improvement of about 887\% increase in q-value was seen when comparing the same code using neural networks vs not using neural networks on the same dataset. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. It would definitely be worth looking into this method further for real world use. 
+
+Using the same dataset, a substantial improvement in false discovery rate (887\%) was seen when comparing the same code using neural networks versus without them. There was an increase in runtime due to the calculations required for the neural network inputs, but optimizations could reduce that impact. The dataset used was large and diverse. The results presented in this paper show that using neural networks is a promising tool in zebra crosswalk detection, and is well worth further investigation.
 
 
 
