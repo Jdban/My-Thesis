@@ -326,11 +326,15 @@ In their next paper in 2008 \cite{ZebraPhone}, they implemented this algorithm i
 
 The origins of neural networks originate in 1943, when McCulloh and Pitts published "A logical calculus of the ideas immanent in nervous activity." They showed that simple neural networks could compute a wide array of functions with the same underlying method. A computer that worked as a neural network was created by Frank Rosenblatt and others, with a focus on pattern matching. In 1986, Rumelhard, Hinton and Williams published "Learning Internal Representation by Error Propagation," which popularized the backpropogation method of finding weights, and brought neural networks to the forefront \cite{BackpropHist}, \cite{yadav_2015}.
 
+\subsection{Supervised and Unsupervised Learning}
+Machine learning algorithms can be supervised or unsupervised, each with their own uses. Unsupervised algorithms do not have a labeled output, but can attempt to cluster the outputs.  An example of this is trying to distinguish human faces from backgrounds, with a goal of clustering features together. Reinforcement learning is a type of unsupervised learning where the environment rewards good behavior, which leads to that good behavior being repeated. One use case for unsupervised learning is games, because there cannot be a known output. Winning, losing, and gaining points are good examples of reinforcement. 
+
+Supervised algorithms like backpropagation, require a training set with known outputs. Backpropagation works towards a goal of reducing the error so that the predicted outputs are close to the known outputs. Supervised algorithms are useful when the outputs are rigidly defined\cite{SuperAndNotSuper}.
 
 \section{Neural Network Basics - Feedforward}
 \label{Neural Network Basics - Feedforward}
 %example of a simple thing where why the parameters are weighted
-The quintessential example of a neural network is a feedforward neural network. This network allows information to move forward only, from the inputs to the outputs. An example of a basic feedforward neural network is shown in figure \ref{fig:smallNN}. A series of weights are assigned to every connection, the inputs are fed through the network, multiplied by each respective weight, summed, and then fed to the next layer until the output values are generated. To train a feedforward network, one must either manually adjust the weights, or come up with a mathematical formula to do so. One such method is backpropogation \cite{feedforwardsource}. 
+The quintessential example of a neural network is a feedforward neural network. This network allows information to move forward only, from the inputs to the outputs. An example of a basic feedforward neural network is shown in figure \ref{fig:smallNN}. A series of weights are assigned to every connection, the inputs are fed through the network, multiplied by each respective weight, summed, and then fed to the next layer until the output values are generated. To train a feedforward network, one must either manually adjust the weights, or come up with a mathematical formula to do so. One such method is backpropagation\cite{feedforwardsource}.
 
 \begin{figure}[t]
 \begin{center}
@@ -342,7 +346,9 @@ The quintessential example of a neural network is a feedforward neural network. 
 \end{figure}
 \section{Training Methods}
 
-\subsection{Backpropagation Neural Network}
+
+
+\subsection{Backpropagation}
 \label{Backpropagation Neural Network}
 Backpropagation is a method of training neural networks by adjusting weights backwards through the network. It starts with weights for every link, and runs through them. The error on the output is calculated versus the expected output using the squared error function and the sum of the total error among all output nodes. Then, working from the outputs backwards, one works with all of the weights feeding into a prior node one at a time using partial derivatives and the chain rule. The reason the partial derivative is used is because the hidden layers all jointly affect the output nodes' error and must be taken into account. Once all of the weights are adjusted, the error should decrease and then the process is repeated until the error level is reduced to an acceptable level \cite{backpropositionPaper}. 
 
