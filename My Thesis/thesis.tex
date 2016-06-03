@@ -99,7 +99,7 @@
 \author{Jason Banich}
 \degreemonth{June} \degreeyear{2016} \degree{Master of Science}
 \defensemonth{June} \defenseyear{2016}
-\numberofmembers{3} \chair{Dr. John Seng} \othermemberA{Dr. Franz Kurfess} \othermemberB{Dr. Philip Nico} \campus{San Luis Obispo}
+\numberofmembers{3} \chair{Dr. John Seng} \othermemberA{Dr. Franz Kurfess} \othermemberB{Dr. Phillip Nico} \campus{San Luis Obispo}
 \copyrightyears{seven}
 \degree{Master Of Science} 
 \field{Computer Science}
@@ -126,7 +126,7 @@
 \begin{abstract}
 It can be difficult to guide yourself across a crosswalk when your visual capabilities are limited, which can be an everyday issue for someone with impaired vision. This paper aims to alleviate that issue for zebra stripe crosswalks by proposing an algorithm that incorporates multiple properties of zebra stripe crosswalks with a neural network to assist in quickly and accurately identifying a crosswalk in video and pictures taken from a smartphone camera.
 
-This method improves the accuracy of zebra crosswalk detection in images. In a large dataset, it correctly identified 75\% of zebra crosswalks, while reducing the false discovery rate from 20\% without using neural networks to 2.26\% using this neural network method, and only incorrectly identifying 2.15\% of non-crosswalk images as crosswalks.
+This method improves the accuracy of zebra crosswalk detection in images. In a large dataset, it correctly identified 76.5\% of zebra crosswalks, while reducing the false discovery rate (q-value) from 20\% without using neural networks to 2.21\% using this neural network method. Only 2.04\% of non-crosswalk images as crosswalks using the neural network method.
 %\todo[inline]{JASON - add a bit more}
 %\todo[inline]{JASON - two key numbers that are representative of what I found. this percent better or this percent more accurate}
 
@@ -218,7 +218,7 @@ Neural networks are given a large amount of training data with known outputs. Th
 %http://www.springer.com/cda/content/document/cda_downloaddocument/9789401798150-c2.pdf?SGWID=0-0-45-1495021-p177264210
 %yadav_2015
 
-The origins of neural networks originate in 1943, when McCulloh and Pitts published "A logical calculus of the ideas immanent in nervous activity." They showed that simple neural networks could compute a wide array of functions with the same underlying method. A computer that worked as a neural network was created by Frank Rosenblatt and others, with a focus on pattern matching. In 1986, Rumelhard, Hinton and Williams published "Learning Internal Representation by Error Propagation," which popularized the backpropogation method of finding weights, and brought neural networks to the forefront \cite{BackpropHist}, \cite{yadav_2015}.
+The origins of neural networks originate in 1943, when McCulloh and Pitts published ``A logical calculus of the ideas immanent in nervous activity.'' They showed that simple neural networks could compute a wide array of functions with the same underlying method. A computer that worked as a neural network was created by Frank Rosenblatt and others, with a focus on pattern matching. In 1986, Rumelhard, Hinton and Williams published "Learning Internal Representation by Error Propagation," which popularized the backpropogation method of finding weights, and brought neural networks to the forefront \cite{BackpropHist}, \cite{yadav_2015}.
 
 \subsection{Supervised and Unsupervised Learning}
 Machine learning algorithms can be supervised or unsupervised, each with their own uses. Unsupervised algorithms do not have a labeled output, but can attempt to cluster the outputs.  An example of this is trying to distinguish human faces from backgrounds, with a goal of clustering features together. Reinforcement learning is a type of unsupervised learning where the environment rewards good behavior, which leads to that good behavior being repeated. One use case for unsupervised learning is games, because there cannot be a known output. Winning, losing, and gaining points are good examples of reinforcement. 
@@ -260,7 +260,7 @@ One algorithm for lane following is as follows:
   \item Crop to the center portion of the image
   \item Identify the edges using an edge detection algorithm, and then draw the
   edges onto a new image
-  \item Apply Hough line detection to find shapes in the edges
+  \item Apply Hough line detection to find shapes in the edges \cite{HoughTransform}
   \item Delete extraneous lines that were detected
   \item Apply and draw the discovered lines on the main image
 \end{enumerate}
@@ -282,7 +282,7 @@ The steps are as follows:
    \item Refine the segmentation by allowing larger groups to absorb smaller groups inside of them.
    \item Check where the region is in the image. If it is far to the left or right, classify it as such. If the bottom of the region is too high up in the image, discard it.
    \item Use a Fourier transform to check if the crosswalk angle is too extreme. If it is, throw it out. 
-   \item Use Fischer criteria to find the feature points where the intensity changes drastically, determine that there are at least seven (which means there are four or more crosswalk stripes in the image), and then check the projective invariant criteria to see if it passes or is thrown out. 
+   \item Use Fischer criteria to find the feature points where the intensity changes drastically, determine that there are at least seven (which means there are four or more crosswalk stripes in the image), and then check the projective invariant criteria to see if it passes or is thrown out\cite{relatedworkbipolarity}. 
    \item Repeat for each region until a match is found or all regions are exhausted.
 \end{enumerate}
 This method had decent results, with a high true positive rate (74 / 79), and zero false positives out of 34 other images. One downside of their method is that the image is required to have a minimum of four crosswalk stripes in the image to detect it, which means the majority of the crosswalk must be in the frame. Theoretically this method will work with a moderate amount of the crosswalk covered up (by other pedestrians or cars) as long as there are enough feature points in a vertical line in at least one area to detect the crosswalk. 
@@ -539,7 +539,7 @@ The data used for the results were a selection of videos from multiple white cro
 %How Neural Networks are used here (explain some of the experimentation around different layers, and how they didn't do much)
 \section{Neural Network Configuration}
 %Jeneeplz
-For this project, neural networks are used for the prediction of stripelets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 15 neurons. A supervised feedforward network trained using backpropagation was used for this project. This neural network configuration is one of the simpler configurations, and remains very effective. An unsupervised neural network configuration would not be as optimal for this same exact data because the outputs are known, allowing a supervised method to train more efficiently. A larger training set would likely be required for an unsupervised network. 
+For this project, neural networks are used for the prediction of stripelets as either being part of a crosswalk or not. Neural networks require a set number of hidden layers with a set number of neurons, so some experimentation was done to determine these numbers. As shown in figure \ref{fig:Neural1png}, for this project, the final result was one hidden layer of 14 neurons. A supervised feedforward network trained using backpropagation was used for this project. This neural network configuration is one of the simpler configurations, and remains very effective. An unsupervised neural network configuration would not be as optimal for this same exact data because the outputs are known, allowing a supervised method to train more efficiently. A larger training set would likely be required for an unsupervised network. 
 
 %D:\Users\SandyBridge\Dropbox\Thesis\My Paper Stuff\Results\Results of NN Training with diff neurons.xlsx
 %    \begin{table}[t]
@@ -558,14 +558,14 @@ For this project, neural networks are used for the prediction of stripelets as e
 
 There is no real consensus on exactly how many hidden layers and neurons should be used in the perfect neural network configuration. The different rules of thumb have been that no more than one hidden layer is typically needed, and the number of neurons should be between the number of inputs and the number of outputs, and layers must have more than one neuron\cite{Heaton:2008:INN:1502373}. With those being the guidelines, one hidden layer with a number of neurons mostly ranging from the number of inputs to the number of outputs was chosen with a range from 2 to 22 neurons in the hidden layer. Subsets of these training parameters were tried as well, with none having better results than using all eleven parameters. 
 
-The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the false discovery rate (also known as q-value). The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The q-value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 14.7\% of the positive results were incorrect. 
+The neural network training of the crosswalk stripelets used many different input parameters to predict the output. The metric used for evaluating the parameters was finding the true positive and false negative rates, as well as the false discovery rate (also known as q-value). The true positive rate is calculated by dividing the number of crosswalk stripelets that were predicted correctly as stripelets over the total number of crosswalk stripelets. The false positive rate is calculated by dividing the number of non-crosswalk stripelets predicted as stripelets out of the total number of non-crosswalk stripelets. The q-value is found by dividing the number of false positives by the number of stripelets that were predicted to be part of a crosswalk. Table \ref{tab:nnresultsoverall} shows the neural network prediction rates over the entire result set. Only 16.6\% of the positively predicted stripelets were incorrect. 
 
 
-As shown in appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with 14 hidden layers had the lowest false positive rate of 3.12\%, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
+As shown in appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurations were better than others, but none by much. The configuration with the 14 neuron hidden layer had the lowest false positive rate of 3.12\%, so it was chosen as the configuration to be used for the rest of this project. This fits with the original assumption that the number of neurons should be between the number of inputs and outputs as shown in figure \ref{fig:Neural1png}. 
 
 \begin{figure}[t]
 \begin{center}
-\includegraphics[width=10cm]{ChosenNN2.png}
+\includegraphics[width=10cm]{ChosenNN3Small.png}
 \captionfonts
 \caption[Final Neural Network Configuration]{Final neural network configuration showing input layers, hidden layers, and output layers}
 \label{fig:Neural1png}
@@ -577,8 +577,9 @@ As shown in appendix table \ref{tab:NN-HiddenLayersResultsAPP}, some configurati
         \hline
         Number of Stripelets & True Pos Rate & False Pos Rate & Q-Val \bigstrut\\
         \hline
-        19461 & 78.73\% & 3.12\% & 0.147 \bigstrut\\
+        19461 & 77.61\% & 3.57\% & 0.1663 \bigstrut\\
         \hline
+
     
         \caption{Neural Network results over stripelets in final dataset}
         \label{tab:nnresultsoverall} 
@@ -621,16 +622,17 @@ There were five different angles used for the videos of the crosswalks, with 340
     \hline
     Camera Angle & True Positive Rate & False Positive Rate \bigstrut\\
     \hline
-    Low Angle & 45.33\% & 0.00\% \bigstrut\\
+    Low Angle & 45.67\% & 0.00\% \bigstrut\\
     \hline
-    Left Side & 75.33\% & 1.33\% \bigstrut\\
+    Left Side & 77.00\% & 1.00\% \bigstrut\\
     \hline
-    Standard & 77.67\% & 0.33\% \bigstrut\\
+    Standard & 77.00\% & 0.33\% \bigstrut\\
     \hline
-    Right Side & 76.67\% & 0.33\% \bigstrut\\
+    Right Side & 76.67\% & 1.33\% \bigstrut\\
     \hline
-    High Angle & 73.67\% & 0.33\% \bigstrut\\
+    High Angle & 73.33\% & 0.00\% \bigstrut\\
     \hline
+
 
     \caption{Results of crosswalk detection categorized by video angle}
     \label{tab:downbad} 
@@ -647,13 +649,12 @@ Each crosswalk was categorized by time of day, morning, midday and night, to see
     \hline
     Time of Day & True Positive Rate & False Positive Rate \bigstrut\\
     \hline
-    Morning & 78.20\% & 0.20\% \bigstrut\\
+    Morning & 79.09\% & 2.91\% \bigstrut\\
     \hline
-    Midday & 74.94\% & 0.94\% \bigstrut\\
+    Midday & 75.00\% & 2.05\% \bigstrut\\
     \hline
-    Night & 75.69\% & 1.36\% \bigstrut\\
+    Night & 75.44\% & 1.90\% \bigstrut\\
     \hline
-
 
     \caption{Results of crosswalk detection categorized by time of day}
     \label{tab:timeofday} 
@@ -678,16 +679,17 @@ The true positive percent results of zebra stripe and hybrid crosswalks detectio
 \begin{table}[t]
     \begin{longtable}{|r|r|r|r|r|r|r|}
     \hline
-    Type & \multicolumn{1}{l|}{NN Enabled} & Min & Avg & Median & Max & STD \bigstrut\\
+    Type  & \multicolumn{1}{l|}{Neural Network Enabled} & Min   & Avg   & Median & Max   & STD \bigstrut\\
     \hline
-    Hybrid & YES & 0.00\% & 58.13\% & 62.50\% & 86.25\% & 30.90\% \bigstrut\\
+    Hybrid & YES   & 0.00\% & 57.92\% & 62.50\% & 85.00\% & 30.68\% \bigstrut\\
     \hline
-    Hybrid & NO & 15.00\% & 76.46\% & 86.25\% & 98.75\% & 31.18\% \bigstrut\\
+    Hybrid & NO    & 15.00\% & 76.46\% & 86.25\% & 98.75\% & 31.18\% \bigstrut\\
     \hline
-    Zebra & YES & 55.00\% & 87.64\% & 95.00\% & 98.75\% & 14.82\% \bigstrut\\
+    Zebra & YES   & 52.50\% & 88.06\% & 95.00\% & 98.75\% & 15.30\% \bigstrut\\
     \hline
-    Zebra & NO & 62.50\% & 92.22\% & 97.50\% & 100.00\% & 11.85\% \bigstrut\\
+    Zebra & NO    & 62.50\% & 92.22\% & 97.50\% & 100.00\% & 11.85\% \bigstrut\\
     \hline
+
 
     \caption{True positive percent results of crosswalk detection categorized by type of crosswalk}
     \label{tab:typeOfCwalk} 
@@ -722,20 +724,21 @@ As the user walks across the crosswalk, the view of the crosswalk changes and th
 
 For this section, the crosswalk videos were grouped by their respective crosswalks, and the non-crosswalk videos were kept as separate groups. The results of this are shown in the appendix tables \ref{tab:appendixcrosswalkresults} and \ref{tab:appendixcrosswalkresultswithoutNeural}, and the summary results are shown in table \ref{tab:crosswalkResultsSummary}. Crosswalks have both true and false positive rates depending on whether they were predicted as being a crosswalk by correct reasoning or not. Videos not containing a crosswalk only have false positives because they cannot contain a crosswalk.  There were a couple outliers in each category (crosswalk vs not) that are included in the dataset, and will be investigated in a later section.
 
-Overall, the average true positive rate of the crosswalk videos was 75.83\% $\pm$ 14.87\% with a standard deviation of 26.28\%. The average false positive rate of crosswalk images was 0.58\% $\pm$ .75\% with a standard deviation of 1.33\%. The average false positive rate of the non-crosswalk videos was 1.65\% $\pm$ 1.56\% with a standard deviation of 3.29\%.
+Overall, the average true positive rate of the crosswalk videos was 76\% $\pm$ 13.42\% with a standard deviation of 26.52\%. The average false positive rate of crosswalk images was 0.59\% $\pm$ .64\% with a standard deviation of 1.26\%. The average false positive rate of the non-crosswalk videos was 1.67\% $\pm$ 1.75\% with a standard deviation of 3.45\%.
 The true positive predictions of crosswalks had a rather high standard deviation, which was heavily affected by the one outlier crosswalk, and the false positives were more tightly grouped with a lower standard deviation.
 
 \begin{table}[t]
     \begin{longtable}{|r|r|r|r|r|r|r|}
     \hline
-       & Cwalk & Minimum & Average & Median & Maximum & STD \bigstrut\\
+          & Cwalk & Minimum & Average & Median & Maximum & STD \bigstrut\\
     \hline
-    True Pos Rates & YES & 0.00\% & 75.83\% & 81.25\% & 98.75\% & 26.28\% \bigstrut\\
+    True Pos Rates & YES   & 0.00\% & 76.00\% & 82.50\% & 98.75\% & 26.52\% \bigstrut\\
     \hline
-    False Pos Rates & YES & 0.00\% & 0.58\% & 0.00\% & 5.00\% & 1.33\% \bigstrut\\
+    False Pos Rates & YES   & 0.00\% & 0.59\% & 0.00\% & 3.75\% & 1.26\% \bigstrut\\
     \hline
-    False Pos Rates & NO & 0.00\% & 1.65\% & 0.00\% & 12.00\% & 3.29\% \bigstrut\\
+    False Pos Rates & NO    & 0.00\% & 1.67\% & 0.00\% & 12.00\% & 3.45\% \bigstrut\\
     \hline
+
 
     \caption[Results summary by video/crosswalk]{Results summary by video/crosswalk. Crosswalks have true and false positives, while non-crosswalk videos only have false positives}
     \label{tab:crosswalkResultsSummary} 
@@ -746,11 +749,11 @@ The true positive predictions of crosswalks had a rather high standard deviation
 
 \subsection{Yellow Crosswalks}
 
-In order to determine how well yellow crosswalks worked with white crosswalk training data, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 26\% true positive rate, and the zebra scored 66\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data, due to the differing intensity values between the two colors affecting neural network parameters. 
+In order to determine how well yellow crosswalks worked with white crosswalk training data, two yellow crosswalks were tested, one being a standard zebra and the other a hybrid. The hybrid scored 24\% true positive rate, and the zebra scored 66\%, both out of 80 frames. Those results are promising enough to conclude that yellow crosswalks will likely work well with this approach, and would probably improve with yellow crosswalks being included in the training data, due to the differing intensity values between the two colors affecting neural network parameters. 
 
 \subsection{Challenging Images and Analysis}
 
-The video with the highest amount of false positives (12\%) was 'NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes and sidewalk were incorrectly matched together, which ended up passing the neural network and the validation as a crosswalk. A couple examples are shown in figure \ref{fig:worstFalsePosPic}, one can see the identified stripelets. More neural network parameters may be able to help remove these from the stripelet set, perhaps something relating to the vertical pixel intensity. 
+The video with the highest amount of false positives (12\%) was `NonC Output Night 13,' which was a street being crossed not at an intersection, and with bike lanes going across both sides. The bike lanes and sidewalk were incorrectly matched together, which ended up passing the neural network and the validation as a crosswalk. A couple examples are shown in figure \ref{fig:worstFalsePosPic}, one can see the identified stripelets. More neural network parameters may be able to help remove these from the stripelet set, perhaps something relating to the vertical pixel intensity. 
 
 \begin{figure}[t]
 \begin{center}
@@ -761,7 +764,7 @@ The video with the highest amount of false positives (12\%) was 'NonC Output Nig
 \end{center}
 \end{figure}
 
-Another video with a high amount of false positives (7\%) was 'NonC Output Night 11,' which is a of a parking lot with many horizontal lines painted throughout.  A few pictures are shown in figure \ref{fig:2ndworstFalsePosPic}. These examples aren't typically what one would expect to see if they were trying to cross the street, but they are lines that look similar to a zebra crosswalk. They could potentially be filtered out by using some sort of expected width vs Y axis level in the image. 
+Another video with a high amount of false positives (6.67\%) was `NonC Output Night 11,' which is a of a parking lot with many horizontal lines painted throughout.  A few pictures are shown in figure \ref{fig:2ndworstFalsePosPic}. These examples aren't typically what one would expect to see if they were trying to cross the street, but they are lines that look similar to a zebra crosswalk. They could potentially be filtered out by using some sort of expected width vs Y axis level in the image. 
 
 \begin{figure}[t]
 \begin{center}
@@ -772,7 +775,7 @@ Another video with a high amount of false positives (7\%) was 'NonC Output Night
 \end{center}
 \end{figure}
 
-One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown in figure \ref{fig:worstcwalk}. None of the eighty frames were correctly identified in this crosswalk, whereas the next lowest crosswalk had 56\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This crosswalk had very odd pavement coloring, which may have contributed to why it failed the neural network.  Potentially this issue could be solved by adding more training data and including more odd crosswalks such as this one. 
+One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown in figure \ref{fig:worstcwalk}. None of the eighty frames were correctly identified in this crosswalk, whereas the next lowest crosswalk had 53\% of frames correctly identified. The neural network failed to correctly identify enough stripelets in the majority of the images to pass the crosswalk validation. This crosswalk had very odd pavement coloring, which may have contributed to why it failed the neural network.  Potentially this issue could be solved by adding more training data and including more odd crosswalks such as this one. 
 
 \begin{figure}[t]
 \begin{center}
@@ -787,7 +790,7 @@ One crosswalk specifically had the worst results by far, 'Night hybrid 3,' shown
 
 \subsection{Overall Results}
 %\todo[inline]{JASON - Add another evaluation metric here}  
-Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk frames, and using the neural network to cull stripelets before detection, a q-value of .023 is obtained. When not using the neural network to cull the stripelets, the q-value is .200 (see table \ref{tab:overallresults}). Using the neural network garners an improvement of 985\%. In simpler terms, using neural networks, out of 1000 positively predicted images, only 23 would be false positives versus 200 without using the neural predictions. Figure \ref{fig:CrosswalkTruePosWithAndWithout} shows that for every video, the neural network does drop the positive identifications, but figure \ref{fig:VideoFalsePosWithAndWithout} shows that false positive rates dropped drastically as well for every single case. 
+Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk frames, and using the neural network to cull stripelets before detection, a q-value of .021 is obtained for crosswalk predictions. When not using the neural network to cull the stripelets, the q-value is .200 (see table \ref{tab:overallresults}). Using the neural network garners an improvement of 933\% of this value. In simpler terms, using neural networks, out of 1000 positively predicted images, only 21 would be false positives versus 200 without using the neural predictions. Figure \ref{fig:CrosswalkTruePosWithAndWithout} shows that for every video, the neural network does drop the positive identifications, but figure \ref{fig:VideoFalsePosWithAndWithout} shows that false positive rates dropped drastically as well for every single case. 
 
 
 \begin{table}[t]
@@ -795,13 +798,14 @@ Over all of the videos, including 1200 crosswalk frames and 970 non-crosswalk fr
     \hline
     \multicolumn{1}{|c|}{Neural Network Enabled} & True Positive Rate & False Positive Rate & q-value \bigstrut\\
     \hline
-    NO & 91.00\% & 24.88\% & .200 \bigstrut\\
+    NO    & 91.00\% & 24.88\% & 0.200 \bigstrut\\
     \hline
-    YES & 76.28\% & 2.15\% & .023 \bigstrut\\
+    YES   & 76.51\% & 2.04\% & 0.021 \bigstrut\\
     \hline
 
 
-    \caption[Overall results of crosswalk detection with and without neural networks]{Overall results of crosswalk detection with/without neural networks. Improvement of 887\% in q-value}
+
+    \caption[Overall results of crosswalk detection with and without neural networks]{Overall results of crosswalk detection with/without neural networks. Improvement of 937\% in q-value}
     \label{tab:overallresults} 
     \end{longtable}
 \end{table}
@@ -900,7 +904,7 @@ Neural networks are used in many image processing platforms, but they haven't ye
 
 %An improvement of about 887\% increase in q-value was seen when comparing the same code using neural networks vs not using neural networks on the same dataset. With neural networks, there was an increase in runtime due to the calculations required for the neural network, but with optimizations that could be reduced. The dataset used was reasonably large and diverse and garnered decent results. It would definitely be worth looking into this method further for real world use. 
 
-Using the same dataset, a substantial improvement in false discovery rate (887\%) was seen when comparing the same code using neural networks versus without them. There was an increase in runtime due to the calculations required for the neural network inputs, but optimizations could reduce that impact. The dataset used was large and diverse. The results presented in this paper show that using neural networks is a promising tool in zebra crosswalk detection, and is well worth further investigation.
+Using the same dataset, a substantial improvement in false discovery rate (937\%) was seen when comparing the same code using neural networks versus without them. The false discovery rate is important because the higher it is, the more confidence can be given to a positive prediction. There was an increase in runtime due to the calculations required for the neural network inputs, but optimizations could reduce that impact. The dataset used was large and diverse. The results presented in this paper show that using neural networks is a promising tool in zebra crosswalk detection, and is well worth further investigation.
 
 
 
@@ -973,72 +977,73 @@ Using the same dataset, a substantial improvement in false discovery rate (887\%
     \begin{longtable}{|r|r|r|r|}
     
     \hline
-    Name & Frames & True Positive Rate & False Positive Rate \bigstrut\\
+    Name  & Frames & True Pos Rate & False Pos Rate \bigstrut\\
     \hline
-    Afternoon hybrid 1 & 80 & 58.75\% & 5.00\% \bigstrut\\
+    Afternoon hybrid 1 & 80    & 58.75\% & 3.75\% \bigstrut\\
     \hline
-    Afternoon hybrid 3 & 80 & 81.25\% & 0.00\% \bigstrut\\
+    Afternoon hybrid 3 & 80    & 81.25\% & 0.00\% \bigstrut\\
     \hline
-    Afternoon zebra 1 & 80 & 96.25\% & 0.00\% \bigstrut\\
+    Afternoon zebra 1 & 80    & 96.25\% & 0.00\% \bigstrut\\
     \hline
-    Afternoon zebra 3 & 80 & 55.00\% & 1.25\% \bigstrut\\
+    Afternoon zebra 3 & 80    & 52.50\% & 1.25\% \bigstrut\\
     \hline
-    Afternoon zebra 5 & 80 & 78.75\% & 0.00\% \bigstrut\\
+    Afternoon zebra 5 & 80    & 82.50\% & 0.00\% \bigstrut\\
     \hline
-    Morning hybrid 1 & 80 & 66.25\% & 0.00\% \bigstrut\\
+    Morning hybrid 1 & 80    & 66.25\% & 0.00\% \bigstrut\\
     \hline
-    Morning hybrid 3 & 80 & 56.25\% & 0.00\% \bigstrut\\
+    Morning hybrid 3 & 80    & 56.25\% & 3.75\% \bigstrut\\
     \hline
-    Morning zebra 1 & 80 & 97.50\% & 1.25\% \bigstrut\\
+    Morning zebra 1 & 80    & 98.75\% & 0.00\% \bigstrut\\
     \hline
-    Morning zebra 3 & 80 & 93.75\% & 0.00\% \bigstrut\\
+    Morning zebra 3 & 80    & 93.75\% & 0.00\% \bigstrut\\
     \hline
-    Morning zebra 5 & 80 & 76.25\% & 0.00\% \bigstrut\\
+    Morning zebra 5 & 80    & 77.50\% & 0.00\% \bigstrut\\
     \hline
-    Night hybrid 1 & 80 & 86.25\% & 0.00\% \bigstrut\\
+    Night hybrid 1 & 80    & 85.00\% & 0.00\% \bigstrut\\
     \hline
-    Night hybrid 3 & 80 & 0.00\% & 1.25\% \bigstrut\\
+    Night hybrid 3 & 80    & 0.00\% & 1.25\% \bigstrut\\
     \hline
-    Night zebra 1 & 80 & 97.50\% & 0.00\% \bigstrut\\
+    Night zebra 1 & 80    & 97.50\% & 0.00\% \bigstrut\\
     \hline
-    Night zebra 3 & 80 & 98.75\% & 0.00\% \bigstrut\\
+    Night zebra 3 & 80    & 98.75\% & 0.00\% \bigstrut\\
     \hline
-    Night zebra 5 & 80 & 95.00\% & 0.00\% \bigstrut\\
+    Night zebra 5 & 80    & 95.00\% & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 4 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 4 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 5 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 5 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 6 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 6 & 50    & -     & 3.33\% \bigstrut\\
     \hline
-    NonC Output Afternoon 7 FC-30 & 30 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 7 FC-30 & 30    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 8 FC-30 & 30 & -  & 3.33\% \bigstrut\\
+    NonC Output Afternoon 8 FC-30 & 30    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 9 FC-30 & 30 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 9 FC-30 & 30    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Morning 2 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Morning 2 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Morning 3 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Morning 3 & 50    & -     & 6.67\% \bigstrut\\
     \hline
-    NonC Output Night 10 FC-200 & 200 & -  & 0.00\% \bigstrut\\
+    NonC Output Night 10 FC-200 & 200   & -     & 3.00\% \bigstrut\\
     \hline
-    NonC Output Night 11 FC-30 & 30 & -  & 6.67\% \bigstrut\\
+    NonC Output Night 11 FC-30 & 30    & -     & 12.00\% \bigstrut\\
     \hline
-    NonC Output Night 12 FC-100 & 100 & -  & 4.00\% \bigstrut\\
+    NonC Output Night 12 FC-100 & 100   & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 13 FC-50 & 50 & -  & 12.00\% \bigstrut\\
+    NonC Output Night 13 FC-50 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 5 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Night 5 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 6 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Night 6 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 7 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Night 7 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 8 & 50 & -  & 0.00\% \bigstrut\\
+    NonC Output Night 8 & 50    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Night 9 & 50 & -  & 2.00\% \bigstrut\\
+    NonC Output Night 9 & 50    & -     & 0.00\% \bigstrut\\
     \hline
+
 
     \caption{Results for each crosswalk by name with neural network enabled}
     \label{tab:appendixcrosswalkresults} 
@@ -1047,72 +1052,72 @@ Using the same dataset, a substantial improvement in false discovery rate (887\%
 
     \begin{longtable}{|r|r|r|r|}
     
+        \hline
+    Name  & Frames & True Pos Rate & False Pos Rate \bigstrut\\
     \hline
-    Name & Frames & True Positive Rate & False Positive Rate \bigstrut\\
+    Afternoon hybrid 1 & 80    & 85.00\% & 7.50\% \bigstrut\\
     \hline
-    Afternoon hybrid 1 & 80 & 85.00\% & 7.50\% \bigstrut\\
+    Afternoon hybrid 3 & 80    & 96.25\% & 0.00\% \bigstrut\\
     \hline
-    Afternoon hybrid 3 & 80 & 96.25\% & 0.00\% \bigstrut\\
+    Afternoon zebra 1 & 80    & 97.50\% & 1.25\% \bigstrut\\
     \hline
-    Afternoon zebra 1 & 80 & 97.50\% & 1.25\% \bigstrut\\
+    Afternoon zebra 3 & 80    & 62.50\% & 32.50\% \bigstrut\\
     \hline
-    Afternoon zebra 3 & 80 & 62.50\% & 32.50\% \bigstrut\\
+    Afternoon zebra 5 & 80    & 97.50\% & 2.50\% \bigstrut\\
     \hline
-    Afternoon zebra 5 & 80 & 97.50\% & 2.50\% \bigstrut\\
+    Morning hybrid 1 & 80    & 98.75\% & 0.00\% \bigstrut\\
     \hline
-    Morning hybrid 1 & 80 & 98.75\% & 0.00\% \bigstrut\\
+    Morning hybrid 3 & 80    & 76.25\% & 10.00\% \bigstrut\\
     \hline
-    Morning hybrid 3 & 80 & 76.25\% & 10.00\% \bigstrut\\
+    Morning zebra 1 & 80    & 98.75\% & 1.25\% \bigstrut\\
     \hline
-    Morning zebra 1 & 80 & 98.75\% & 1.25\% \bigstrut\\
+    Morning zebra 3 & 80    & 93.75\% & 0.00\% \bigstrut\\
     \hline
-    Morning zebra 3 & 80 & 93.75\% & 0.00\% \bigstrut\\
+    Morning zebra 5 & 80    & 86.25\% & 0.00\% \bigstrut\\
     \hline
-    Morning zebra 5 & 80 & 86.25\% & 0.00\% \bigstrut\\
+    Night hybrid 1 & 80    & 87.50\% & 3.75\% \bigstrut\\
     \hline
-    Night hybrid 1 & 80 & 87.50\% & 3.75\% \bigstrut\\
+    Night hybrid 3 & 80    & 15.00\% & 22.50\% \bigstrut\\
     \hline
-    Night hybrid 3 & 80 & 15.00\% & 22.50\% \bigstrut\\
+    Night zebra 1 & 80    & 97.50\% & 0.00\% \bigstrut\\
     \hline
-    Night zebra 1 & 80 & 97.50\% & 0.00\% \bigstrut\\
+    Night zebra 3 & 80    & 100.00\% & 0.00\% \bigstrut\\
     \hline
-    Night zebra 3 & 80 & 100.00\% & 0.00\% \bigstrut\\
+    Night zebra 5 & 80    & 96.25\% & 2.50\% \bigstrut\\
     \hline
-    Night zebra 5 & 80 & 96.25\% & 2.50\% \bigstrut\\
+    NonC Output Afternoon 4 & 50    & -     & 8.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 4 & 50 & -  & 8.00\% \bigstrut\\
+    NonC Output Afternoon 5 & 50    & -     & 2.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 5 & 50 & -  & 2.00\% \bigstrut\\
+    NonC Output Afternoon 6 & 50    & -     & 14.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 6 & 50 & -  & 14.00\% \bigstrut\\
+    NonC Output Afternoon 7 FC-30 & 30    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 7 FC-30 & 30 & -  & 0.00\% \bigstrut\\
+    NonC Output Afternoon 8 FC-30 & 30    & -     & 16.67\% \bigstrut\\
     \hline
-    NonC Output Afternoon 8 FC-30 & 30 & -  & 16.67\% \bigstrut\\
+    NonC Output Afternoon 9 FC-30 & 30    & -     & 0.00\% \bigstrut\\
     \hline
-    NonC Output Afternoon 9 FC-30 & 30 & -  & 0.00\% \bigstrut\\
+    NonC Output Morning 2 & 50    & -     & 6.00\% \bigstrut\\
     \hline
-    NonC Output Morning 2 & 50 & -  & 6.00\% \bigstrut\\
+    NonC Output Morning 3 & 50    & -     & 22.00\% \bigstrut\\
     \hline
-    NonC Output Morning 3 & 50 & -  & 22.00\% \bigstrut\\
+    NonC Output Night 10 FC-200 & 200   & -     & 19.00\% \bigstrut\\
     \hline
-    NonC Output Night 10 FC-200 & 200 & -  & 19.00\% \bigstrut\\
+    NonC Output Night 11 FC-30 & 30    & -     & 46.67\% \bigstrut\\
     \hline
-    NonC Output Night 11 FC-30 & 30 & -  & 46.67\% \bigstrut\\
+    NonC Output Night 12 FC-100 & 100   & -     & 45.00\% \bigstrut\\
     \hline
-    NonC Output Night 12 FC-100 & 100 & -  & 45.00\% \bigstrut\\
+    NonC Output Night 13 FC-50 & 50    & -     & 68.00\% \bigstrut\\
     \hline
-    NonC Output Night 13 FC-50 & 50 & -  & 68.00\% \bigstrut\\
+    NonC Output Night 5 & 50    & -     & 4.00\% \bigstrut\\
     \hline
-    NonC Output Night 5 & 50 & -  & 4.00\% \bigstrut\\
+    NonC Output Night 6 & 50    & -     & 12.00\% \bigstrut\\
     \hline
-    NonC Output Night 6 & 50 & -  & 12.00\% \bigstrut\\
+    NonC Output Night 7 & 50    & -     & 2.00\% \bigstrut\\
     \hline
-    NonC Output Night 7 & 50 & -  & 2.00\% \bigstrut\\
+    NonC Output Night 8 & 50    & -     & 2.00\% \bigstrut\\
     \hline
-    NonC Output Night 8 & 50 & -  & 2.00\% \bigstrut\\
-    \hline
-    NonC Output Night 9 & 50 & -  & 38.00\% \bigstrut\\
+    NonC Output Night 9 & 50    & -     & 38.00\% \bigstrut\\
     \hline
 
     
