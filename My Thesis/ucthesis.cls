@@ -226,11 +226,11 @@
 \def\partname{Part}
 %             ~~~~
 % abstract environment:
-\def\abstractname{Abstract}
+\def\abstractname{ABSTRACT}
 %                 ~~~~~~~~
 %
 % acknowledge environment:
-\def\acknowledgename{Acknowledgements}
+\def\acknowledgename{ACKNOWLEDGMENTS}
 %                    ~~~~~~~~~~~~~~~~
 % vitae environment:
 \def\vitaename{Curriculum Vit\ae}
@@ -339,8 +339,8 @@
 		\addvspace{1.4in} 
 
     A Thesis \par
-    Presented to \par
-    the Faculty of California Polytechnic State University \par
+    presented to \par
+    the Faculty of California Polytechnic State University, \par
     \@campus
     
 		\addvspace{1.4in}    
@@ -467,8 +467,7 @@ ALL RIGHTS RESERVED
 %\setcounter{page}{1}
 \begin{center}
 {\fmfont
-{\bfseries 
-\abstractname}\par
+{\abstractname}\par
 \@title\par
 \vspace{.1in}
 \@author\par
@@ -505,7 +504,7 @@ Thesis Committee Chair
 % The acknowledgements environment puts a large, bold, centered 
 % "Acknowledgements" label at the top of the page.
 
-\newenvironment{acknowledgements}{\begin{alwayssingle}
+\newenvironment{acknowledgments}{\begin{alwayssingle}
 \begin{center}
 {\large \bfseries \acknowledgename}
 \end{center}
