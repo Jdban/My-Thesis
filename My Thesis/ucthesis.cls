@@ -506,7 +506,7 @@ Thesis Committee Chair
 
 \newenvironment{acknowledgments}{\begin{alwayssingle}
 \begin{center}
-{\large \bfseries \acknowledgename}
+{\acknowledgename}
 \end{center}
 }{\end{alwayssingle}}
 
